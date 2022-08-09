@@ -16,7 +16,7 @@
 		E11615CA28A1F24F0065AB8F /* BookFinderUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11615C928A1F24F0065AB8F /* BookFinderUITests.swift */; };
 		E11615CC28A1F24F0065AB8F /* BookFinderUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11615CB28A1F24F0065AB8F /* BookFinderUITestsLaunchTests.swift */; };
 		E13F84F228A1F6F3007272E9 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = E13F84F128A1F6F3007272E9 /* SnapKit */; };
-		E13F84F528A21119007272E9 /* BookList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13F84F428A21119007272E9 /* BookList.swift */; };
+		E13F84F528A21119007272E9 /* BookListResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13F84F428A21119007272E9 /* BookListResults.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,7 +49,7 @@
 		E11615C528A1F24F0065AB8F /* BookFinderUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BookFinderUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E11615C928A1F24F0065AB8F /* BookFinderUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookFinderUITests.swift; sourceTree = "<group>"; };
 		E11615CB28A1F24F0065AB8F /* BookFinderUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookFinderUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		E13F84F428A21119007272E9 /* BookList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookList.swift; sourceTree = "<group>"; };
+		E13F84F428A21119007272E9 /* BookListResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookListResults.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,7 +148,7 @@
 		E13F84F328A210FC007272E9 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				E13F84F428A21119007272E9 /* BookList.swift */,
+				E13F84F428A21119007272E9 /* BookListResults.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -289,7 +289,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E13F84F528A21119007272E9 /* BookList.swift in Sources */,
+				E13F84F528A21119007272E9 /* BookListResults.swift in Sources */,
 				E11615AD28A1F24C0065AB8F /* ViewController.swift in Sources */,
 				E11615A928A1F24C0065AB8F /* AppDelegate.swift in Sources */,
 				E11615AB28A1F24C0065AB8F /* SceneDelegate.swift in Sources */,
