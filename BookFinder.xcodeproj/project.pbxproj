@@ -15,6 +15,7 @@
 		E11615C028A1F24F0065AB8F /* BookFinderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11615BF28A1F24F0065AB8F /* BookFinderTests.swift */; };
 		E11615CA28A1F24F0065AB8F /* BookFinderUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11615C928A1F24F0065AB8F /* BookFinderUITests.swift */; };
 		E11615CC28A1F24F0065AB8F /* BookFinderUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11615CB28A1F24F0065AB8F /* BookFinderUITestsLaunchTests.swift */; };
+		E13F84F228A1F6F3007272E9 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = E13F84F128A1F6F3007272E9 /* SnapKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +55,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E13F84F228A1F6F3007272E9 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -156,6 +158,9 @@
 			dependencies = (
 			);
 			name = BookFinder;
+			packageProductDependencies = (
+				E13F84F128A1F6F3007272E9 /* SnapKit */,
+			);
 			productName = BookFinder;
 			productReference = E11615A528A1F24C0065AB8F /* BookFinder.app */;
 			productType = "com.apple.product-type.application";
@@ -228,6 +233,9 @@
 				Base,
 			);
 			mainGroup = E116159C28A1F24C0065AB8F;
+			packageReferences = (
+				E13F84F028A1F6F3007272E9 /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
 			productRefGroup = E11615A628A1F24C0065AB8F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -606,6 +614,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		E13F84F028A1F6F3007272E9 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit";
+			requirement = {
+				branch = develop;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		E13F84F128A1F6F3007272E9 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E13F84F028A1F6F3007272E9 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = E116159D28A1F24C0065AB8F /* Project object */;
 }
