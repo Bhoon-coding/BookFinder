@@ -32,11 +32,16 @@ class ViewController: UIViewController {
         completion: @escaping (Result<BookListResults, Error>) -> Void
     ) {
         
-        let url = URL(string: "https://www.googleapis.com/books/v1/volumes?q=time&key=AIzaSyBNDyZjwm54nksCpMh7TGVnj6yzYWfNNIU")
+        let url = URL(string: "https://www.googleapis.com/books/v1/volumes?q=객체")
+        
+        guard let urlRequest = url else {
+            print("유효하지 않은 url 입니다.")
+            return
+        }
         
         let session: URLSession = .shared
         
-        let task = session.dataTask(with: url!) { data, response, error in
+        let task = session.dataTask(with: urlRequest) { data, response, error in
             if let error = error {
                 print("네트워크 에러:\(error.localizedDescription)")
                 return
