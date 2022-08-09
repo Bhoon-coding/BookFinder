@@ -5,7 +5,7 @@
 //  Created by BH on 2022/08/09.
 //
 
-import Foundation
+import UIKit
 
 protocol BookListAPIProviderType {
     

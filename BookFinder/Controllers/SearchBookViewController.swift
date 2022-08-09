@@ -14,7 +14,7 @@ final class SearchBookViewController: UIViewController {
     // MARK: - UIProperties
     
     private lazy var searchController: UISearchController = {
-        let searchController = UISearchController()
+        let searchController = UISearchController(searchResultsController: nil)
         searchController.searchBar.placeholder = Text.searchBarPlaceholder
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.automaticallyShowsCancelButton = false
@@ -34,6 +34,7 @@ final class SearchBookViewController: UIViewController {
     // MARK: - Properties
     
     private var bookListAPIProvider: BookListAPIProviderType?
+    private var bookImageProvider: BookImageProviderType?
     
     let sectionInsets = Style.sectionInsets
     var searchedBookTotalCount: Int = 0
@@ -42,10 +43,12 @@ final class SearchBookViewController: UIViewController {
     // MARK: - LifeCycle 
     
     static func instantiate(
-        with bookListAPIProvider: BookListAPIProviderType
+        with bookListAPIProvider: BookListAPIProviderType,
+        _ bookImageProvider: BookImageProviderType
     ) -> SearchBookViewController {
         let viewController = SearchBookViewController()
         viewController.bookListAPIProvider = bookListAPIProvider
+        viewController.bookImageProvider = bookImageProvider
         return viewController
     }
     
@@ -140,7 +143,19 @@ extension SearchBookViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         let book: BookList = bookList[indexPath.item]
+        let bookImageURL = book.bookInfo.imageLinks.thumbnail
+        
         cell.setupCell(book: book)
+        
+        bookImageProvider?.fetchImage(with: bookImageURL, completion: { result in
+            switch result {
+            case .success(let image):
+                cell.setupImage(image: image)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        })
+        
         return cell
     }
 
@@ -186,7 +201,6 @@ extension SearchBookViewController {
     private enum Text {
         static let searchBarPlaceholder: String = "찾으시려는 책을 검색 해보세요."
         static let navigationTitle: String = "책 검색"
-        static let resultsCountLabel: String = "검색결과"
     }
     
 }

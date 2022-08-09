@@ -37,6 +37,11 @@ protocol NetworkRequesterType {
         completion: @escaping (Result<Data, NetworkError>) -> Void
     )
     
+    func request(
+        to urlString: String,
+        completion: @escaping (Result<Data, NetworkError>) -> Void
+    )
+    
 }
 
 struct NetworkRequester: NetworkRequesterType {
@@ -53,6 +58,13 @@ struct NetworkRequester: NetworkRequesterType {
         }
         dataTask(request: urlRequest, completion: completion).resume()
     }
+    
+    func request(to urlString: String, completion: @escaping (Result<Data, NetworkError>) -> Void) {
+        guard let url = URL(string: urlString) else { return }
+        let urlRequest = URLRequest(url: url)
+        dataTask(request: urlRequest, completion: completion).resume()
+    }
+    
     
     private func dataTask(
         request: URLRequest,

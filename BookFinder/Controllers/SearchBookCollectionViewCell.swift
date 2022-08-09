@@ -17,7 +17,6 @@ final class SearchBookCollectionViewCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.layer.cornerRadius = Style.cornerRadius
         imageView.layer.masksToBounds = true
-        imageView.backgroundColor = .darkGray
         return imageView
     }()
     
@@ -64,7 +63,9 @@ final class SearchBookCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Methods
+}
+
+extension SearchBookCollectionViewCell {
     
     func setupCell(book: BookList) {
         let bookInfo: BookInfo = book.bookInfo
@@ -84,6 +85,17 @@ final class SearchBookCollectionViewCell: UICollectionViewCell {
         authorLabel.text = author
         publishedDataLabel.text = bookInfo.publishedDate
     }
+    
+    func setupImage(image: UIImage) {
+        DispatchQueue.main.async {
+            self.bookImageView.image = image
+        }
+    }
+}
+
+// MARK: - Cell Layout extension
+
+extension SearchBookCollectionViewCell {
     
     private func setupView() {
         [bookImageView,
