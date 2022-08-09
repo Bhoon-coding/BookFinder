@@ -34,6 +34,7 @@ final class SearchBookViewController: UIViewController {
     // MARK: - Properties
     
     private var bookListAPIProvider: BookListAPIProviderType?
+    
     let sectionInsets = Style.sectionInsets
     var searchedBookTotalCount: Int = 0
     var bookList: [BookList] = []

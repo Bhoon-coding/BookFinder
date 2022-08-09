@@ -33,24 +33,26 @@ final class SearchBookCollectionViewCell: UICollectionViewCell {
         let stackView = UIStackView(arrangedSubviews: [authorLabel, publishedDataLabel])
         stackView.distribution = .fillEqually
         stackView.axis = .vertical
-        stackView.backgroundColor = .brown
-        
         return stackView
     }()
     
     private lazy var authorLabel: UILabel = {
         let label = UILabel()
+        label.textColor = .darkGray
+        label.font = UIFont.preferredFont(forTextStyle: .footnote)
         return label
     }()
     
     private lazy var publishedDataLabel: UILabel = {
         let label = UILabel()
+        label.textColor = .darkGray
+        label.font = UIFont.preferredFont(forTextStyle: .footnote)
         return label
     }()
     
     // MARK: - Properties
     
-    static let identifier: String = "SearchBookCollectionViewCell"
+    static let identifier = String(describing: SearchBookCollectionViewCell.self)
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -66,7 +68,21 @@ final class SearchBookCollectionViewCell: UICollectionViewCell {
     
     func setupCell(book: BookList) {
         let bookInfo: BookInfo = book.bookInfo
+        var author: String
+        
+        if let authors = bookInfo.authors {
+            if authors.count > 1 {
+                author = "\(authors[0]) 외 \(authors.count - 1)명"
+            } else {
+                author = authors[0]
+            }
+        } else {
+            author = Text.noAuthor
+        }
+        
         bookTitleLabel.text = bookInfo.title
+        authorLabel.text = author
+        publishedDataLabel.text = bookInfo.publishedDate
     }
     
     private func setupView() {
@@ -86,22 +102,22 @@ final class SearchBookCollectionViewCell: UICollectionViewCell {
     private func setupConstraintsOfBookImageView() {
         bookImageView.snp.makeConstraints {
             $0.leading.top.trailing.equalToSuperview()
-            $0.bottom.equalToSuperview().inset(frame.height / 3)
+            $0.bottom.equalToSuperview().inset(self.frame.height * 0.3)
         }
     }
     
     private func setupConstraintsOfBookTitleLabel() {
         bookTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(bookImageView.snp.bottom).offset(4)
+            $0.top.equalTo(bookImageView.snp.bottom)
             $0.leading.trailing.equalToSuperview()
         }
     }
     
     private func setupConstraintsOfBottomLabelStackView() {
         bottomLabelStackView.snp.makeConstraints {
-            $0.top.equalTo(bookTitleLabel.snp.bottom).offset(8)
+            $0.top.equalTo(bookTitleLabel.snp.bottom)
             $0.leading.trailing.bottom.equalToSuperview()
-//            $0.height.equalTo(40)
+            $0.height.equalTo(self.frame.height * 0.1)
         }
     }
     
@@ -114,6 +130,10 @@ extension SearchBookCollectionViewCell {
     private enum Style {
         static let labelLineLimit: Int = 2
         static let cornerRadius: CGFloat = 20
+    }
+    
+    private enum Text {
+        static let noAuthor: String = "작자 미상"
     }
 }
 
