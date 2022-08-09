@@ -21,6 +21,7 @@
 		E13F84FA28A23A64007272E9 /* BookListEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13F84F928A23A64007272E9 /* BookListEndPoint.swift */; };
 		E13F84FD28A23D30007272E9 /* BookListInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = E13F84FC28A23D30007272E9 /* BookListInfo.plist */; };
 		E13F850028A23D63007272E9 /* Bundle + extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13F84FF28A23D63007272E9 /* Bundle + extension.swift */; };
+		E13F850328A24029007272E9 /* NetworkRequester.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13F850228A24029007272E9 /* NetworkRequester.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +59,7 @@
 		E13F84F928A23A64007272E9 /* BookListEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookListEndPoint.swift; sourceTree = "<group>"; };
 		E13F84FC28A23D30007272E9 /* BookListInfo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = BookListInfo.plist; sourceTree = "<group>"; };
 		E13F84FF28A23D63007272E9 /* Bundle + extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle + extension.swift"; sourceTree = "<group>"; };
+		E13F850228A24029007272E9 /* NetworkRequester.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkRequester.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -167,6 +169,7 @@
 		E13F84F628A23A3F007272E9 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				E13F850128A2400E007272E9 /* NetworkReqeuster */,
 				E13F84FB28A23A8B007272E9 /* EndPoint */,
 			);
 			path = Network;
@@ -187,6 +190,14 @@
 				E13F84FF28A23D63007272E9 /* Bundle + extension.swift */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		E13F850128A2400E007272E9 /* NetworkReqeuster */ = {
+			isa = PBXGroup;
+			children = (
+				E13F850228A24029007272E9 /* NetworkRequester.swift */,
+			);
+			path = NetworkReqeuster;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -329,6 +340,7 @@
 				E13F84F528A21119007272E9 /* BookListResults.swift in Sources */,
 				E11615AD28A1F24C0065AB8F /* ViewController.swift in Sources */,
 				E13F84F828A23A4C007272E9 /* EndPointType.swift in Sources */,
+				E13F850328A24029007272E9 /* NetworkRequester.swift in Sources */,
 				E13F84FA28A23A64007272E9 /* BookListEndPoint.swift in Sources */,
 				E11615A928A1F24C0065AB8F /* AppDelegate.swift in Sources */,
 				E11615AB28A1F24C0065AB8F /* SceneDelegate.swift in Sources */,
