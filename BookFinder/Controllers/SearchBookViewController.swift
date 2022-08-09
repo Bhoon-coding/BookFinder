@@ -7,21 +7,36 @@
 
 import UIKit
 
-class SearchBookViewController: UIViewController {
+import SnapKit
+
+final class SearchBookViewController: UIViewController {
     
     // MARK: - UIProperties
     
     private lazy var searchController: UISearchController = {
         let searchController = UISearchController()
         searchController.searchBar.placeholder = Text.searchBarPlaceholder
+        searchController.hidesNavigationBarDuringPresentation = false
         searchController.automaticallyShowsCancelButton = false
         return searchController
+    }()
+    
+    private lazy var collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.register(
+            SearchBookCollectionViewCell.self,
+            forCellWithReuseIdentifier: SearchBookCollectionViewCell.identifier
+        )
+        return collectionView
     }()
     
     // MARK: - Properties
     
     private var bookListAPIProvider: BookListAPIProviderType?
-    var bookList: [BookListResults] = []
+    let sectionInsets = Style.sectionInsets
+    var searchedBookTotalCount: Int = 0
+    var bookList: [BookList] = []
 
     // MARK: - LifeCycle 
     
@@ -36,6 +51,8 @@ class SearchBookViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        setupCollectionView()
+        setupConstraints()
         setupSearchController()
     }
     
@@ -59,12 +76,16 @@ extension SearchBookViewController: UISearchResultsUpdating {
         }
     }
     
-    
     private func fetchBookList(with bookTitle: String) {
         bookListAPIProvider?.fetchBooks(with: bookTitle, to: 1, completion: { result in
             switch result {
-            case .success(let bookList):
-                dump(bookList)
+            case .success(let data):
+                self.searchedBookTotalCount = data.totalItems
+                self.bookList = data.items
+                dump(data)
+                DispatchQueue.main.async { [weak self] in
+                    self?.collectionView.reloadData()
+                }
             case .failure(let error):
                 print("네트워킹 실패: \(error.localizedDescription)")
             }
@@ -73,15 +94,98 @@ extension SearchBookViewController: UISearchResultsUpdating {
     
 }
 
+// MARK: - CollectionView Layout extension
+
+extension SearchBookViewController {
+    
+    private func setupCollectionView() {
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        
+        [collectionView].forEach {
+            view.addSubview($0)
+        }
+    }
+    
+    private func setupConstraints() {
+        setupConstraintsOfCollectionView()
+    }
+    
+    private func setupConstraintsOfCollectionView() {
+        collectionView.snp.makeConstraints {
+            $0.leading.top.trailing.bottom.equalToSuperview()
+        }
+    }
+    
+}
+
+extension SearchBookViewController: UICollectionViewDataSource {
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        numberOfItemsInSection section: Int
+    ) -> Int {
+        return bookList.count
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath
+    ) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: SearchBookCollectionViewCell.identifier,
+            for: indexPath
+        ) as? SearchBookCollectionViewCell else {
+            return UICollectionViewCell()
+        }
+        let book: BookList = bookList[indexPath.item]
+        cell.setupCell(book: book)
+        return cell
+    }
+
+}
+
+extension SearchBookViewController: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+        let width: CGFloat = collectionView.frame.width
+        let height: CGFloat = collectionView.frame.height
+        let itemsPerRow: CGFloat = 2
+        let widthPadding = sectionInsets.left * (itemsPerRow + 1)
+        let itemsPerColumn: CGFloat = 3
+        let heightPadding = sectionInsets.top * (itemsPerColumn + 1)
+        let cellWidth = (width - widthPadding) / itemsPerRow
+        let cellHeight = (height - heightPadding) / itemsPerColumn
+        
+        return CGSize(width: cellWidth, height: cellHeight)
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        insetForSectionAt section: Int
+    ) -> UIEdgeInsets {
+        return sectionInsets
+    }
+    
+}
+
 // MARK: - NameSpaces
 
 extension SearchBookViewController {
     
+    private enum Style {
+        static let sectionInsets: UIEdgeInsets = .init(top: 10, left: 10, bottom: 10, right: 10)
+    }
+    
     private enum Text {
-        
         static let searchBarPlaceholder: String = "찾으시려는 책을 검색 해보세요."
         static let navigationTitle: String = "책 검색"
-        
+        static let resultsCountLabel: String = "검색결과"
     }
     
 }

@@ -23,6 +23,7 @@
 		E13F850028A23D63007272E9 /* Bundle + extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13F84FF28A23D63007272E9 /* Bundle + extension.swift */; };
 		E13F850328A24029007272E9 /* NetworkRequester.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13F850228A24029007272E9 /* NetworkRequester.swift */; };
 		E13F850628A2428B007272E9 /* BookListAPIProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13F850528A2428B007272E9 /* BookListAPIProvider.swift */; };
+		E13F850D28A269AB007272E9 /* SearchBookCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13F850C28A269AB007272E9 /* SearchBookCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +63,7 @@
 		E13F84FF28A23D63007272E9 /* Bundle + extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle + extension.swift"; sourceTree = "<group>"; };
 		E13F850228A24029007272E9 /* NetworkRequester.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkRequester.swift; sourceTree = "<group>"; };
 		E13F850528A2428B007272E9 /* BookListAPIProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookListAPIProvider.swift; sourceTree = "<group>"; };
+		E13F850C28A269AB007272E9 /* SearchBookCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBookCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -231,6 +233,7 @@
 			isa = PBXGroup;
 			children = (
 				E11615AC28A1F24C0065AB8F /* SearchBookViewController.swift */,
+				E13F850C28A269AB007272E9 /* SearchBookCollectionViewCell.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -373,6 +376,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E13F84F528A21119007272E9 /* BookListResults.swift in Sources */,
+				E13F850D28A269AB007272E9 /* SearchBookCollectionViewCell.swift in Sources */,
 				E11615AD28A1F24C0065AB8F /* SearchBookViewController.swift in Sources */,
 				E13F84F828A23A4C007272E9 /* EndPointType.swift in Sources */,
 				E13F850328A24029007272E9 /* NetworkRequester.swift in Sources */,
