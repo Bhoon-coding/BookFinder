@@ -16,8 +16,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         let networkRequester = NetworkRequester()
         let bookListAPIProvider = BookListAPIProvider(networkRequester: networkRequester)
-        let rootViewController = ViewController.instantiate(with: bookListAPIProvider)
-        window?.rootViewController = rootViewController
+        let rootViewController = SearchBookViewController.instantiate(with: bookListAPIProvider)
+        let navigationViewController = UINavigationController(rootViewController: rootViewController)
+        window?.rootViewController = navigationViewController
         window?.makeKeyAndVisible()
     }
 
