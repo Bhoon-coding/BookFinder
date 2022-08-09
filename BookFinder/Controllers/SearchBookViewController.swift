@@ -78,6 +78,15 @@ extension SearchBookViewController: UISearchBarDelegate {
         fetchBookList(with: text)
     }
     
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText.count == 0 {
+            bookList = []
+            DispatchQueue.main.async { [weak self] in
+                self?.collectionView.reloadData()
+            }
+        }
+    }
+    
     private func fetchBookList(with bookTitle: String) {
         bookListAPIProvider?.fetchBooks(with: bookTitle, to: 1, completion: { result in
             switch result {
