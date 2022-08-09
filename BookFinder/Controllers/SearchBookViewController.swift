@@ -36,25 +36,32 @@ class SearchBookViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        setupUI()
-        fetchBookList()
+        setupSearchController()
     }
     
-    private func setupUI() {
+    private func setupSearchController() {
         self.navigationItem.searchController = searchController
         self.navigationItem.title = Text.navigationTitle
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationItem.hidesSearchBarWhenScrolling = false
+        searchController.searchResultsUpdater = self
     }
     
 }
 
 // MARK: - Fetch BookList Data extension
 
-extension SearchBookViewController {
+extension SearchBookViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let text = searchController.searchBar.text else { return }
+        if text.count >= 2 {
+            fetchBookList(with: text)
+        }
+    }
     
-    private func fetchBookList() {
-        bookListAPIProvider?.fetchBooks(with: "time", to: 1, completion: { result in
+    
+    private func fetchBookList(with bookTitle: String) {
+        bookListAPIProvider?.fetchBooks(with: bookTitle, to: 1, completion: { result in
             switch result {
             case .success(let bookList):
                 dump(bookList)
