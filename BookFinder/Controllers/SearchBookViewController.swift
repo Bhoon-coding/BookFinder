@@ -65,19 +65,17 @@ final class SearchBookViewController: UIViewController {
         self.navigationItem.title = Text.navigationTitle
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationItem.hidesSearchBarWhenScrolling = false
-        searchController.searchResultsUpdater = self
+//        searchController.searchResultsUpdater = self
+        searchController.searchBar.delegate = self
     }
     
 }
 
-// MARK: - Fetch BookList Data extension
-
-extension SearchBookViewController: UISearchResultsUpdating {
-    func updateSearchResults(for searchController: UISearchController) {
+extension SearchBookViewController: UISearchBarDelegate {
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let text = searchController.searchBar.text else { return }
-        if text.count >= 2 {
-            fetchBookList(with: text)
-        }
+        fetchBookList(with: text)
     }
     
     private func fetchBookList(with bookTitle: String) {
@@ -97,6 +95,20 @@ extension SearchBookViewController: UISearchResultsUpdating {
     }
     
 }
+
+// MARK: - Fetch BookList Data extension
+
+//extension SearchBookViewController: UISearchResultsUpdating {
+//    func updateSearchResults(for searchController: UISearchController) {
+//        guard let text = searchController.searchBar.text else { return }
+//        if text.count >= 2 {
+//            fetchBookList(with: text)
+//        }
+//    }
+//
+    
+//
+//}
 
 // MARK: - CollectionView Layout extension
 
