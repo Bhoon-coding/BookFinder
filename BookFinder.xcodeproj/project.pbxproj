@@ -117,14 +117,14 @@
 		E11615A728A1F24C0065AB8F /* BookFinder */ = {
 			isa = PBXGroup;
 			children = (
+				E11615D928A1F29D0065AB8F /* Resource */,
+				E11615D828A1F2900065AB8F /* Application */,
 				E13F850828A255AC007272E9 /* Views */,
 				E13F850728A25592007272E9 /* ViewModels */,
+				E13F84F328A210FC007272E9 /* Models */,
+				E13F850B28A2564F007272E9 /* Controllers */,
 				E13F84FE28A23D55007272E9 /* Utils */,
 				E13F84F628A23A3F007272E9 /* Network */,
-				E13F84F328A210FC007272E9 /* Models */,
-				E11615D828A1F2900065AB8F /* Application */,
-				E13F850B28A2564F007272E9 /* Controllers */,
-				E11615D928A1F29D0065AB8F /* Resource */,
 			);
 			path = BookFinder;
 			sourceTree = "<group>";
