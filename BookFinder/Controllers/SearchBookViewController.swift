@@ -18,6 +18,7 @@ final class SearchBookViewController: UIViewController {
         searchController.searchBar.placeholder = Text.searchBarPlaceholder
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.automaticallyShowsCancelButton = false
+        searchController.obscuresBackgroundDuringPresentation = true
         return searchController
     }()
     
@@ -104,14 +105,16 @@ extension SearchBookViewController {
     
     private func fetchBookList(with bookTitle: String) {
         bookListAPIProvider?.fetchBooks(with: bookTitle, from: startIndex, completion: { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success(let data):
-                self?.searchedBookTotalCount = data.totalItems
-                self?.bookList = data.items
-                self?.startIndex += 10
-                self?.searchedTitle = bookTitle
-                DispatchQueue.main.async { [weak self] in
-                    self?.collectionView.reloadData()
+                self.searchedBookTotalCount = data.totalItems
+                self.bookList = data.items
+                self.startIndex += 10
+                self.searchedTitle = bookTitle
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                    self.navigationItem.title = "검색결과: \(self.searchedBookTotalCount)"
                 }
             case .failure(let error):
                 print(error.localizedDescription)

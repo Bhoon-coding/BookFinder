@@ -64,6 +64,7 @@ final class SearchBookCollectionViewCell: UICollectionViewCell {
     }
     
     override func prepareForReuse() {
+        super.prepareForReuse()
         bookImageView.image = nil
         bookTitleLabel.text = ""
         authorLabel.text = ""
