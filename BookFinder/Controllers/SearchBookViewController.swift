@@ -221,6 +221,24 @@ extension SearchBookViewController: UICollectionViewDelegateFlowLayout {
     
 }
 
+// MARK: - CollectionView Delegate extension
+
+extension SearchBookViewController: UICollectionViewDelegate {
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
+        let backBarButtonItem = UIBarButtonItem(title: nil, style: .plain, target: self, action: nil)
+        backBarButtonItem.tintColor = .black
+        navigationItem.backBarButtonItem = backBarButtonItem
+        let book: BookList = bookList[indexPath.item]
+        let bookDetailViewController = BookDetailViewController(book: book)
+        navigationController?.pushViewController(bookDetailViewController, animated: true)
+    }
+    
+}
+
 // MARK: - Search ResultsUpdate extension
 
 extension SearchBookViewController: UISearchResultsUpdating {
@@ -243,6 +261,7 @@ extension SearchBookViewController: UISearchBarDelegate {
             bookList = []
             DispatchQueue.main.async { [weak self] in
                 self?.collectionView.reloadData()
+                self?.navigationItem.title = Text.navigationTitle
             }
         }
     }
