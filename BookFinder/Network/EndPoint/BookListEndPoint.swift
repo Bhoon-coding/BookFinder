@@ -18,9 +18,9 @@ class BookListEndPoint: EndPointType {
     }
     
     var query: [URLQueryItem]? {
-        return [URLQueryItem(name: "key", value: apiKey),
+        return [URLQueryItem(name: "q", value: "\(searchText)"),
                 URLQueryItem(name: "startIndex", value: "\(startIndex)"),
-                URLQueryItem(name: "q", value: "\(searchText)")]
+                URLQueryItem(name: "key", value: apiKey)]
     }
     
     var apiKey: String {
