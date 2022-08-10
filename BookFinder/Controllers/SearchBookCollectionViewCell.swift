@@ -63,6 +63,13 @@ final class SearchBookCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        bookImageView.image = nil
+        bookTitleLabel.text = ""
+        authorLabel.text = ""
+        publishedDataLabel.text = ""
+    }
+    
 }
 
 extension SearchBookCollectionViewCell {

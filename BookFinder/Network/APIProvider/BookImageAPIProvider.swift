@@ -30,16 +30,17 @@ class BookImageProvider: BookImageProviderType {
         with urlString: String,
         completion: @escaping (Result<UIImage, Error>) -> Void
     ) {
-//        let cacheKey = NSString(string: urlString)
-//        if let cachedImage = imageCahe.object(forKey: cacheKey) {
-//            completion(.success(cachedImage))
-//        }
+        let cacheKey = NSString(string: urlString)
+        if let cachedImage = imageCahe.object(forKey: cacheKey) {
+            completion(.success(cachedImage))
+        }
         networkRequester.request(to: urlString) { result in
             switch result {
             case .success(let data):
                 guard let image = UIImage(data: data) else {
                     return
                 }
+                self.imageCahe.setObject(image, forKey: cacheKey)
                 completion(.success(image))
             case .failure(let error):
                 completion(.failure(error))

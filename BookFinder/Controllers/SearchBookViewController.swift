@@ -137,7 +137,7 @@ extension SearchBookViewController: UICollectionViewDataSource {
         willDisplay cell: UICollectionViewCell,
         forItemAt indexPath: IndexPath
     ) {
-        if indexPath.item == bookList.count - 1 {
+        if indexPath.item == bookList.count - 2 {
             bookListAPIProvider?.fetchBooks(
                 with: searchedTitle,
                 from: startIndex,
@@ -146,7 +146,6 @@ extension SearchBookViewController: UICollectionViewDataSource {
                 case .success(let data):
                     self?.bookList += data.items
                     self?.startIndex += 10
-                    dump(data)
                     DispatchQueue.main.async {
                         self?.collectionView.reloadData()
                     }
