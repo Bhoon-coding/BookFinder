@@ -65,30 +65,16 @@ final class SearchBookViewController: UIViewController {
         self.navigationItem.title = Text.navigationTitle
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationItem.hidesSearchBarWhenScrolling = false
-//        searchController.searchResultsUpdater = self
+        searchController.searchResultsUpdater = self
         searchController.searchBar.delegate = self
     }
     
 }
 
-extension SearchBookViewController: UISearchBarDelegate {
+extension SearchBookViewController {
     
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        guard let text = searchController.searchBar.text else { return }
-        fetchBookList(with: text)
-    }
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchText.count == 0 {
-            bookList = []
-            DispatchQueue.main.async { [weak self] in
-                self?.collectionView.reloadData()
-            }
-        }
-    }
-    
-    private func fetchBookList(with bookTitle: String) {
-        bookListAPIProvider?.fetchBooks(with: bookTitle, to: 1, completion: { result in
+    private func fetchBookList(with searchText: String) {
+        bookListAPIProvider?.fetchBooks(with: searchText, to: 0, completion: { result in
             switch result {
             case .success(let data):
                 self.searchedBookTotalCount = data.totalItems
@@ -98,26 +84,12 @@ extension SearchBookViewController: UISearchBarDelegate {
                     self?.collectionView.reloadData()
                 }
             case .failure(let error):
-                print("네트워킹 실패: \(error.localizedDescription)")
+                print(error.localizedDescription)
             }
         })
     }
     
 }
-
-// MARK: - Fetch BookList Data extension
-
-//extension SearchBookViewController: UISearchResultsUpdating {
-//    func updateSearchResults(for searchController: UISearchController) {
-//        guard let text = searchController.searchBar.text else { return }
-//        if text.count >= 2 {
-//            fetchBookList(with: text)
-//        }
-//    }
-//
-    
-//
-//}
 
 // MARK: - CollectionView Layout extension
 
@@ -143,6 +115,36 @@ extension SearchBookViewController {
     }
     
 }
+
+// MARK: - Fetch BookList Data extension
+
+extension SearchBookViewController: UISearchResultsUpdating {
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let searchText = searchController.searchBar.text else { return }
+        if searchText.count >= 2 {
+            fetchBookList(with: searchText)
+        }
+    }
+
+}
+
+// MARK: - CollectionView Delegate extension
+
+extension SearchBookViewController: UISearchBarDelegate {
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText.count == 0 {
+            bookList = []
+            DispatchQueue.main.async { [weak self] in
+                self?.collectionView.reloadData()
+            }
+        }
+    }
+    
+}
+
+// MARK: - CollectionView DataSource extension
 
 extension SearchBookViewController: UICollectionViewDataSource {
     
@@ -181,6 +183,8 @@ extension SearchBookViewController: UICollectionViewDataSource {
     }
 
 }
+
+// MARK: - CollectionView DelegateFlowLayout extension
 
 extension SearchBookViewController: UICollectionViewDelegateFlowLayout {
     

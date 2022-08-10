@@ -23,10 +23,13 @@ struct BookListAPIProvider: BookListAPIProviderType {
     
     func fetchBooks(
         with searchText: String,
-        to index: Int,
+        to startIndex: Int,
         completion: @escaping (Result<BookListResults, Error>) -> Void
     ) {
-        let bookListEndPoint = BookListEndPoint(searchText: searchText, startIndex: index)
+        let bookListEndPoint = BookListEndPoint(
+            searchText: searchText,
+            startIndex: startIndex
+        )
         networkRequester.request(to: bookListEndPoint) { result in
             switch result {
             case .success(let data):
