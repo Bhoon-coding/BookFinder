@@ -38,6 +38,8 @@ final class SearchBookViewController: UIViewController {
     
     let sectionInsets = Style.sectionInsets
     var searchedBookTotalCount: Int = 0
+    var startIndex: Int = 0
+    var searchedTitle: String = ""
     var bookList: [BookList] = []
 
     // MARK: - LifeCycle 
@@ -71,26 +73,6 @@ final class SearchBookViewController: UIViewController {
     
 }
 
-extension SearchBookViewController {
-    
-    private func fetchBookList(with searchText: String) {
-        bookListAPIProvider?.fetchBooks(with: searchText, to: 0, completion: { result in
-            switch result {
-            case .success(let data):
-                self.searchedBookTotalCount = data.totalItems
-                self.bookList = data.items
-                dump(data)
-                DispatchQueue.main.async { [weak self] in
-                    self?.collectionView.reloadData()
-                }
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        })
-    }
-    
-}
-
 // MARK: - CollectionView Layout extension
 
 extension SearchBookViewController {
@@ -118,28 +100,23 @@ extension SearchBookViewController {
 
 // MARK: - Fetch BookList Data extension
 
-extension SearchBookViewController: UISearchResultsUpdating {
+extension SearchBookViewController {
     
-    func updateSearchResults(for searchController: UISearchController) {
-        guard let searchText = searchController.searchBar.text else { return }
-        if searchText.count >= 2 {
-            fetchBookList(with: searchText)
-        }
-    }
-
-}
-
-// MARK: - CollectionView Delegate extension
-
-extension SearchBookViewController: UISearchBarDelegate {
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchText.count == 0 {
-            bookList = []
-            DispatchQueue.main.async { [weak self] in
-                self?.collectionView.reloadData()
+    private func fetchBookList(with bookTitle: String) {
+        bookListAPIProvider?.fetchBooks(with: bookTitle, from: startIndex, completion: { [weak self] result in
+            switch result {
+            case .success(let data):
+                self?.searchedBookTotalCount = data.totalItems
+                self?.bookList = data.items
+                self?.startIndex += 10
+                self?.searchedTitle = bookTitle
+                DispatchQueue.main.async { [weak self] in
+                    self?.collectionView.reloadData()
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
             }
-        }
+        })
     }
     
 }
@@ -153,6 +130,33 @@ extension SearchBookViewController: UICollectionViewDataSource {
         numberOfItemsInSection section: Int
     ) -> Int {
         return bookList.count
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        willDisplay cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        if indexPath.item == bookList.count - 1 {
+            bookListAPIProvider?.fetchBooks(
+                with: searchedTitle,
+                from: startIndex,
+                completion: { [weak self] result in
+                switch result {
+                case .success(let data):
+                    self?.bookList += data.items
+                    self?.startIndex += 10
+                    dump(data)
+                    DispatchQueue.main.async {
+                        self?.collectionView.reloadData()
+                    }
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+            )
+        }
+        
     }
     
     func collectionView(
@@ -211,6 +215,34 @@ extension SearchBookViewController: UICollectionViewDelegateFlowLayout {
         insetForSectionAt section: Int
     ) -> UIEdgeInsets {
         return sectionInsets
+    }
+    
+}
+
+// MARK: - Search ResultsUpdate extension
+
+extension SearchBookViewController: UISearchResultsUpdating {
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let searchText = searchController.searchBar.text else { return }
+        if searchText.count >= 2 {
+            fetchBookList(with: searchText)
+        }
+    }
+
+}
+
+// MARK: - SearchBar Delegate extension
+
+extension SearchBookViewController: UISearchBarDelegate {
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText.count == 0 {
+            bookList = []
+            DispatchQueue.main.async { [weak self] in
+                self?.collectionView.reloadData()
+            }
+        }
     }
     
 }

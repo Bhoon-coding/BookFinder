@@ -5,13 +5,13 @@
 //  Created by BH on 2022/08/09.
 //
 
-import UIKit
+import Foundation
 
 protocol BookListAPIProviderType {
     
     func fetchBooks(
         with searchText: String,
-        to startIndex: Int,
+        from startIndex: Int,
         completion: @escaping (Result<BookListResults, Error>) -> Void
     )
     
@@ -23,7 +23,7 @@ struct BookListAPIProvider: BookListAPIProviderType {
     
     func fetchBooks(
         with searchText: String,
-        to startIndex: Int,
+        from startIndex: Int,
         completion: @escaping (Result<BookListResults, Error>) -> Void
     ) {
         let bookListEndPoint = BookListEndPoint(
