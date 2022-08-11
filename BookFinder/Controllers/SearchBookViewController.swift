@@ -58,22 +58,40 @@ final class SearchBookViewController: UIViewController {
         setupView()
         setupConstraints()
         setupSearchController()
-        setupCollectionView()
         setBindings()
     }
     
 }
 
-// MARK: - Layout extension
+// MARK: - Views setup extension
 
 extension SearchBookViewController {
     
     private func setupView() {
+        setupCollectionView()
         [collectionView,
         spinner].forEach {
             view.addSubview($0)
         }
     }
+    
+    private func setupSearchController() {
+        self.navigationItem.searchController = searchController
+        self.navigationItem.title = Text.navigationTitle
+        self.navigationItem.hidesSearchBarWhenScrolling = false
+        searchController.searchBar.delegate = self
+    }
+    
+    private func setupCollectionView() {
+        collectionView.delegate = self
+        collectionView.dataSource = self
+    }
+    
+}
+
+// MARK: - Constraints extension
+
+extension SearchBookViewController {
     
     private func setupConstraints() {
         setupConstraintsOfCollectionView()
@@ -90,24 +108,6 @@ extension SearchBookViewController {
         spinner.snp.makeConstraints {
             $0.center.equalToSuperview()
         }
-    }
-    
-}
-
-// MARK: - SearchController & CollectionView setup extension
-
-extension SearchBookViewController {
-    
-    private func setupSearchController() {
-        self.navigationItem.searchController = searchController
-        self.navigationItem.title = Text.navigationTitle
-        self.navigationItem.hidesSearchBarWhenScrolling = false
-        searchController.searchBar.delegate = self
-    }
-    
-    private func setupCollectionView() {
-        collectionView.delegate = self
-        collectionView.dataSource = self
     }
     
 }
