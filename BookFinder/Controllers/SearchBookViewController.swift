@@ -18,7 +18,6 @@ final class SearchBookViewController: UIViewController {
         searchController.searchBar.placeholder = Text.searchBarPlaceholder
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.automaticallyShowsCancelButton = false
-        searchController.obscuresBackgroundDuringPresentation = true
         return searchController
     }()
     
@@ -32,63 +31,71 @@ final class SearchBookViewController: UIViewController {
         return collectionView
     }()
     
+    private lazy var spinner: UIActivityIndicatorView = {
+        let spinner = UIActivityIndicatorView()
+        spinner.hidesWhenStopped = true
+        spinner.style = .large
+        spinner.color = .systemBlue
+        return spinner
+    }()
+    
     // MARK: - Properties
     
-    private var bookListAPIProvider: BookListAPIProviderType?
-    private var bookImageProvider: BookImageProviderType?
+    private let viewModel = SearchBookViewModel()
     
-    let sectionInsets = Style.sectionInsets
-    var searchedBookTotalCount: Int = 0
-    var startIndex: Int = 0
-    var searchedTitle: String = ""
-    var bookList: [BookList] = []
+    private let sectionInsets = Style.sectionInsets
+    private var searchedBookTotalCount: Int = 0
+    private var startIndex: Int = 0
+    private var searchedTitle: String = ""
+    private var bookImage: UIImage = UIImage()
+    private var bookList: [BookList] = []
 
     // MARK: - LifeCycle 
-    
-    static func instantiate(
-        with bookListAPIProvider: BookListAPIProviderType,
-        _ bookImageProvider: BookImageProviderType
-    ) -> SearchBookViewController {
-        let viewController = SearchBookViewController()
-        viewController.bookListAPIProvider = bookListAPIProvider
-        viewController.bookImageProvider = bookImageProvider
-        return viewController
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        setupCollectionView()
+        setupView()
         setupConstraints()
         setupSearchController()
+        setBindings()
+    }
+    
+}
+
+// MARK: - Views setup extension
+
+extension SearchBookViewController {
+    
+    private func setupView() {
+        setupCollectionView()
+        [collectionView,
+        spinner].forEach {
+            view.addSubview($0)
+        }
     }
     
     private func setupSearchController() {
         self.navigationItem.searchController = searchController
         self.navigationItem.title = Text.navigationTitle
-        self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationItem.hidesSearchBarWhenScrolling = false
-        searchController.searchResultsUpdater = self
         searchController.searchBar.delegate = self
     }
-    
-}
-
-// MARK: - CollectionView Layout extension
-
-extension SearchBookViewController {
     
     private func setupCollectionView() {
         collectionView.delegate = self
         collectionView.dataSource = self
-        
-        [collectionView].forEach {
-            view.addSubview($0)
-        }
     }
+    
+}
+
+// MARK: - Constraints extension
+
+extension SearchBookViewController {
     
     private func setupConstraints() {
         setupConstraintsOfCollectionView()
+        setupConstraintsOfSpinner()
     }
     
     private func setupConstraintsOfCollectionView() {
@@ -97,29 +104,62 @@ extension SearchBookViewController {
         }
     }
     
+    private func setupConstraintsOfSpinner() {
+        spinner.snp.makeConstraints {
+            $0.center.equalToSuperview()
+        }
+    }
+    
 }
 
-// MARK: - Fetch BookList Data extension
+// MARK: - Data Binding
 
 extension SearchBookViewController {
     
-    private func fetchBookList(with bookTitle: String) {
-        bookListAPIProvider?.fetchBooks(with: bookTitle, from: startIndex, completion: { [weak self] result in
+    private func setBindings() {
+        viewModel.searchedBookTotalCount.bind { [weak self] searchedBookTotalCount in
             guard let self = self else { return }
-            switch result {
-            case .success(let data):
-                self.searchedBookTotalCount = data.totalItems
-                self.bookList = data.items
-                self.startIndex += 10
-                self.searchedTitle = bookTitle
-                DispatchQueue.main.async {
-                    self.collectionView.reloadData()
-                    self.navigationItem.title = "검색결과: \(self.searchedBookTotalCount)"
+            self.searchedBookTotalCount = searchedBookTotalCount
+            
+            DispatchQueue.main.async {
+                if self.searchedBookTotalCount == 0 {
+                    self.navigationItem.title = Text.navigationTitle
+                } else {
+                    self.navigationItem.title = Text.navigationSearchedTitle + "(\(self.searchedBookTotalCount))"
                 }
-            case .failure(let error):
-                print(error.localizedDescription)
             }
-        })
+        }
+        
+        viewModel.searchedTitle.bind { [weak self] searchedTitle in
+            self?.searchedTitle = searchedTitle
+        }
+        
+        viewModel.startIndex.bind { [weak self] startIndex in
+            self?.startIndex = startIndex
+        }
+        
+        viewModel.bookImage.bind { [weak self] bookImage in
+            self?.bookImage = bookImage
+        }
+        
+        viewModel.bookList.bind { [weak self] bookList in
+            self?.bookList = bookList
+            
+            DispatchQueue.main.async {
+                self?.collectionView.reloadData()
+            }
+        }
+        
+        viewModel.isLoading.bind { [weak self] isLoading in
+            DispatchQueue.main.async {
+                if isLoading {
+                    self?.spinner.startAnimating()
+                } else {
+                    self?.spinner.stopAnimating()
+                }
+            }
+            
+        }
     }
     
 }
@@ -132,36 +172,23 @@ extension SearchBookViewController: UICollectionViewDataSource {
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int
     ) -> Int {
-        return bookList.count
+        return viewModel.bookList.value.count
     }
     
-    func collectionView(
+     func collectionView(
         _ collectionView: UICollectionView,
         willDisplay cell: UICollectionViewCell,
         forItemAt indexPath: IndexPath
     ) {
-        if indexPath.item == bookList.count - 2 {
-            bookListAPIProvider?.fetchBooks(
-                with: searchedTitle,
-                from: startIndex,
-                completion: { [weak self] result in
-                switch result {
-                case .success(let data):
-                    self?.bookList += data.items
-                    self?.startIndex += 10
-                    DispatchQueue.main.async {
-                        self?.collectionView.reloadData()
-                    }
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
-            }
+        if indexPath.item == (viewModel.bookList.value.count - 1) {
+            viewModel.fetchAnotherBookList(
+                searchedTitle: searchedTitle,
+                startIndex: startIndex
             )
         }
-        
     }
     
-    func collectionView(
+     func collectionView(
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
@@ -171,20 +198,13 @@ extension SearchBookViewController: UICollectionViewDataSource {
         ) as? SearchBookCollectionViewCell else {
             return UICollectionViewCell()
         }
-        let book: BookList = bookList[indexPath.item]
-        let bookImageURL = book.bookInfo.imageLinks.thumbnail
-        
-        cell.setupCell(book: book)
-        
-        bookImageProvider?.fetchImage(with: bookImageURL, completion: { result in
-            switch result {
-            case .success(let image):
-                cell.setupImage(image: image)
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        })
-        
+        let bookList = viewModel.bookList.value[indexPath.item]
+        let bookImageURL = bookList.bookInfo.imageLinks?.thumbnail ?? Style.emptyImageURL
+       
+        cell.setupCell(bookList: bookList)
+        viewModel.fetchImage(bookImageURL: bookImageURL) {
+            cell.setupImage(image: self.bookImage)
+        }
         return cell
     }
 
@@ -194,7 +214,7 @@ extension SearchBookViewController: UICollectionViewDataSource {
 
 extension SearchBookViewController: UICollectionViewDelegateFlowLayout {
     
-    func collectionView(
+     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
@@ -211,7 +231,7 @@ extension SearchBookViewController: UICollectionViewDelegateFlowLayout {
         return CGSize(width: cellWidth, height: cellHeight)
     }
     
-    func collectionView(
+     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         insetForSectionAt section: Int
@@ -225,7 +245,7 @@ extension SearchBookViewController: UICollectionViewDelegateFlowLayout {
 
 extension SearchBookViewController: UICollectionViewDelegate {
     
-    func collectionView(
+     func collectionView(
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
     ) {
@@ -239,30 +259,26 @@ extension SearchBookViewController: UICollectionViewDelegate {
     
 }
 
-// MARK: - Search ResultsUpdate extension
-
-extension SearchBookViewController: UISearchResultsUpdating {
-    
-    func updateSearchResults(for searchController: UISearchController) {
-        guard let searchText = searchController.searchBar.text else { return }
-        if searchText.count >= 2 {
-            fetchBookList(with: searchText)
-        }
-    }
-
-}
-
 // MARK: - SearchBar Delegate extension
 
 extension SearchBookViewController: UISearchBarDelegate {
     
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.count == 0 {
-            bookList = []
+            viewModel.bookList.value = []
+            viewModel.startIndex.value = 0
+            viewModel.isLoading.value = false
             DispatchQueue.main.async { [weak self] in
-                self?.collectionView.reloadData()
                 self?.navigationItem.title = Text.navigationTitle
             }
+        }
+    }
+    
+     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        guard let searchText = searchController.searchBar.text else { return }
+
+        if searchText.count > 1 {
+            viewModel.fetchBookList(with: searchText)
         }
     }
     
@@ -274,11 +290,14 @@ extension SearchBookViewController {
     
     private enum Style {
         static let sectionInsets: UIEdgeInsets = .init(top: 10, left: 10, bottom: 10, right: 10)
+        static let emptyImageURL: String = "https://previews.123rf.com/images/siamimages/siamimages1504/siamimages150401064/39173277-%EC%82%AC%EC%A7%84-%EC%97%86%EC%9D%8C-%EC%95%84%EC%9D%B4%EC%BD%98-%EC%97%86%EC%9D%8C.jpg"
+
     }
     
     private enum Text {
-        static let searchBarPlaceholder: String = "찾으시려는 책을 검색 해보세요."
+        static let searchBarPlaceholder: String = "읽고싶은 책을 검색 해보세요. (2글자 이상)"
         static let navigationTitle: String = "책 검색"
+        static let navigationSearchedTitle: String = "검색결과"
     }
     
 }

@@ -19,6 +19,14 @@ final class BookDetailViewController: UIViewController {
         return webView
     }()
     
+    private lazy var spinner: UIActivityIndicatorView = {
+        let spinner = UIActivityIndicatorView()
+        spinner.hidesWhenStopped = true
+        spinner.style = .large
+        spinner.color = .systemBlue
+        return spinner
+    }()
+    
     // MARK: - Properties
     
     var book: BookList
@@ -41,19 +49,68 @@ final class BookDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupWebView()
+        setupSpinner()
+        setupConstraints()
     }
     
 }
 
-// MARK: - BookDetailViewController Layout extension
+// MARK: - Views setup extension
 
 extension BookDetailViewController {
     
     private func setupWebView() {
+        webView.navigationDelegate = self
+        
         if let url = URL(string: book.bookInfo.infoLink) {
             let urlRequest = URLRequest(url: url)
             webView.load(urlRequest)
         }
     }
     
+    private func setupSpinner() {
+        view.addSubview(spinner)
+    }
+    
 }
+
+// MARK: - Constraints extension
+
+extension BookDetailViewController {
+    
+    private func setupConstraints() {
+        setupConstraintsOfSpinner()
+    }
+    
+    private func setupConstraintsOfSpinner() {
+        spinner.snp.makeConstraints {
+            $0.center.equalToSuperview()
+        }
+    }
+    
+}
+
+// MARK: - WKNavigationDelegate extension
+
+extension BookDetailViewController: WKNavigationDelegate {
+    
+    func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+        DispatchQueue.main.async {
+            self.spinner.startAnimating()
+        }
+    }
+    
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        DispatchQueue.main.async {
+            self.spinner.stopAnimating()
+        }
+    }
+    
+    func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+        DispatchQueue.main.async {
+            self.spinner.stopAnimating()
+        }
+    }
+    
+}
+
