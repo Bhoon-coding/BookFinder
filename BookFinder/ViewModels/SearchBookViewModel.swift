@@ -35,7 +35,6 @@ public class SearchBookViewModel {
                     self.bookList.value = data.items
                     self.startIndex.value += 10
                     self.searchedTitle.value = searchText
-                    print("fetchBooks:\(data.items.count)")
                     
                 case .failure(let error):
                     print(error.localizedDescription)
@@ -48,8 +47,6 @@ public class SearchBookViewModel {
         searchedTitle: String,
         startIndex: Int
     ) {
-        print("웨않돼")
-        
         bookListAPIProvider.fetchBooks(
             with: searchedTitle,
             from: startIndex,
@@ -60,7 +57,7 @@ public class SearchBookViewModel {
                 case .success(let data):
                     self.bookList.value += data.items
                     self.startIndex.value += 10
-                    print("fetchAnotherBookList:\(data.items.count)")
+                    
                 case .failure(let error):
                     print(error.localizedDescription)
                 }

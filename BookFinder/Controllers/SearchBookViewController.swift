@@ -102,6 +102,7 @@ extension SearchBookViewController {
         viewModel.searchedBookTotalCount.bind { [weak self] searchedBookTotalCount in
             guard let self = self else { return }
             self.searchedBookTotalCount = searchedBookTotalCount
+            
             DispatchQueue.main.async {
                 if self.searchedBookTotalCount == 0 {
                     self.navigationItem.title = Text.navigationTitle
@@ -125,9 +126,11 @@ extension SearchBookViewController {
         
         viewModel.bookList.bind { [weak self] bookList in
             self?.bookList = bookList
+            
             DispatchQueue.main.async {
                 self?.collectionView.reloadData()
             }
+            
         }
     }
     
