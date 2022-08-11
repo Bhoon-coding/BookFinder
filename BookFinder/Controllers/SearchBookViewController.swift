@@ -18,7 +18,6 @@ final class SearchBookViewController: UIViewController {
         searchController.searchBar.placeholder = Text.searchBarPlaceholder
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.automaticallyShowsCancelButton = false
-        
         return searchController
     }()
     
@@ -30,6 +29,14 @@ final class SearchBookViewController: UIViewController {
             forCellWithReuseIdentifier: SearchBookCollectionViewCell.identifier
         )
         return collectionView
+    }()
+    
+    private lazy var spinner: UIActivityIndicatorView = {
+        let spinner = UIActivityIndicatorView()
+        spinner.hidesWhenStopped = true
+        spinner.style = .large
+        spinner.color = .systemBlue
+        return spinner
     }()
     
     // MARK: - Properties
@@ -48,29 +55,29 @@ final class SearchBookViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        setupCollectionView()
+        setupView()
         setupConstraints()
         setupSearchController()
+        setupCollectionView()
         setBindings()
     }
     
 }
 
-// MARK: - CollectionView Layout extension
+// MARK: - Layout extension
 
 extension SearchBookViewController {
     
-    private func setupCollectionView() {
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        
-        [collectionView].forEach {
+    private func setupView() {
+        [collectionView,
+        spinner].forEach {
             view.addSubview($0)
         }
     }
     
     private func setupConstraints() {
         setupConstraintsOfCollectionView()
+        setupConstraintsOfSpinner()
     }
     
     private func setupConstraintsOfCollectionView() {
@@ -79,9 +86,15 @@ extension SearchBookViewController {
         }
     }
     
+    private func setupConstraintsOfSpinner() {
+        spinner.snp.makeConstraints {
+            $0.center.equalToSuperview()
+        }
+    }
+    
 }
 
-// MARK: - SearchController setup extension
+// MARK: - SearchController & CollectionView setup extension
 
 extension SearchBookViewController {
     
@@ -90,6 +103,11 @@ extension SearchBookViewController {
         self.navigationItem.title = Text.navigationTitle
         self.navigationItem.hidesSearchBarWhenScrolling = false
         searchController.searchBar.delegate = self
+    }
+    
+    private func setupCollectionView() {
+        collectionView.delegate = self
+        collectionView.dataSource = self
     }
     
 }
@@ -129,6 +147,16 @@ extension SearchBookViewController {
             
             DispatchQueue.main.async {
                 self?.collectionView.reloadData()
+            }
+        }
+        
+        viewModel.isLoading.bind { [weak self] isLoading in
+            DispatchQueue.main.async {
+                if isLoading {
+                    self?.spinner.startAnimating()
+                } else {
+                    self?.spinner.stopAnimating()
+                }
             }
             
         }
