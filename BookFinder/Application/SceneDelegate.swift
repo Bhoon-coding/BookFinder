@@ -18,31 +18,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     ) {
         guard let windowScene = scene as? UIWindowScene else { return }
         window = UIWindow(windowScene: windowScene)
-        let networkRequester = NetworkRequester()
-        let bookListAPIProvider = BookListAPIProvider(networkRequester: networkRequester)
-        let bookImageProvider = BookImageProvider(networkRequester: networkRequester)
-        let rootViewController = SearchBookViewController.instantiate(
-            with: bookListAPIProvider,
-            bookImageProvider
-        )
+        let rootViewController = SearchBookViewController()
         let navigationViewController = UINavigationController(rootViewController: rootViewController)
         window?.rootViewController = navigationViewController
         window?.makeKeyAndVisible()
-    }
-
-    func sceneDidDisconnect(_ scene: UIScene) {
-    }
-
-    func sceneDidBecomeActive(_ scene: UIScene) {
-    }
-
-    func sceneWillResignActive(_ scene: UIScene) {
-    }
-
-    func sceneWillEnterForeground(_ scene: UIScene) {
-    }
-
-    func sceneDidEnterBackground(_ scene: UIScene) {
     }
 
 }

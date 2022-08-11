@@ -65,7 +65,6 @@ struct NetworkRequester: NetworkRequesterType {
         dataTask(request: urlRequest, completion: completion).resume()
     }
     
-    
     private func dataTask(
         request: URLRequest,
         completion: @escaping (Result<Data, NetworkError>) -> Void
