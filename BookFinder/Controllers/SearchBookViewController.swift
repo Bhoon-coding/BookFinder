@@ -172,8 +172,8 @@ extension SearchBookViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         let bookList = viewModel.bookList.value[indexPath.item]
-        let bookImageURL = bookList.bookInfo.imageLinks.thumbnail
-        
+        let bookImageURL = bookList.bookInfo.imageLinks?.thumbnail ?? Style.emptyImageURL
+       
         cell.setupCell(bookList: bookList)
         viewModel.fetchImage(bookImageURL: bookImageURL) {
             cell.setupImage(image: self.bookImage)
@@ -284,6 +284,8 @@ extension SearchBookViewController {
     
     private enum Style {
         static let sectionInsets: UIEdgeInsets = .init(top: 10, left: 10, bottom: 10, right: 10)
+        static let emptyImageURL: String = "https://previews.123rf.com/images/siamimages/siamimages1504/siamimages150401064/39173277-%EC%82%AC%EC%A7%84-%EC%97%86%EC%9D%8C-%EC%95%84%EC%9D%B4%EC%BD%98-%EC%97%86%EC%9D%8C.jpg"
+
     }
     
     private enum Text {

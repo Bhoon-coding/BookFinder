@@ -11,8 +11,8 @@ struct BookInfo: Decodable {
     
     let title: String
     let authors: [String]?
-    let publishedDate: String
-    let imageLinks: BookImage
+    let publishedDate: String?
+    let imageLinks: BookImage?
     let infoLink: String
     
 }
