@@ -43,12 +43,12 @@ final class SearchBookViewController: UIViewController {
     
     private let viewModel = SearchBookViewModel()
     
-    let sectionInsets = Style.sectionInsets
-    var searchedBookTotalCount: Int = 0
-    var startIndex: Int = 0
-    var searchedTitle: String = ""
-    var bookImage: UIImage = UIImage()
-    var bookList: [BookList] = []
+    private let sectionInsets = Style.sectionInsets
+    private var searchedBookTotalCount: Int = 0
+    private var startIndex: Int = 0
+    private var searchedTitle: String = ""
+    private var bookImage: UIImage = UIImage()
+    private var bookList: [BookList] = []
 
     // MARK: - LifeCycle 
     
@@ -175,7 +175,7 @@ extension SearchBookViewController: UICollectionViewDataSource {
         return viewModel.bookList.value.count
     }
     
-    func collectionView(
+     func collectionView(
         _ collectionView: UICollectionView,
         willDisplay cell: UICollectionViewCell,
         forItemAt indexPath: IndexPath
@@ -188,7 +188,7 @@ extension SearchBookViewController: UICollectionViewDataSource {
         }
     }
     
-    func collectionView(
+     func collectionView(
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
@@ -214,7 +214,7 @@ extension SearchBookViewController: UICollectionViewDataSource {
 
 extension SearchBookViewController: UICollectionViewDelegateFlowLayout {
     
-    func collectionView(
+     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
@@ -231,7 +231,7 @@ extension SearchBookViewController: UICollectionViewDelegateFlowLayout {
         return CGSize(width: cellWidth, height: cellHeight)
     }
     
-    func collectionView(
+     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         insetForSectionAt section: Int
@@ -245,7 +245,7 @@ extension SearchBookViewController: UICollectionViewDelegateFlowLayout {
 
 extension SearchBookViewController: UICollectionViewDelegate {
     
-    func collectionView(
+     func collectionView(
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
     ) {
@@ -259,43 +259,22 @@ extension SearchBookViewController: UICollectionViewDelegate {
     
 }
 
-// MARK: - Search ResultsUpdate
-
-// MARK: - 두 글자 이상 입력시 자동으로 검색기능 (보류)
-//extension SearchBookViewController: UISearchResultsUpdating {
-//
-//    func updateSearchResults(for searchController: UISearchController) {
-//        guard let searchText = searchController.searchBar.text else { return }
-//
-//        if searchText.count >= 2 {
-//            self.viewModel.fetchBookList(with: searchText)
-//        } else if searchText.count == 0 {
-//
-//            self.viewModel.bookList.value = []
-//            self.viewModel.startIndex.value = 0
-//            DispatchQueue.main.async { [weak self] in
-//                self?.navigationItem.title = Text.navigationTitle
-//            }
-//        }
-//    }
-//
-//}
-
 // MARK: - SearchBar Delegate extension
 
 extension SearchBookViewController: UISearchBarDelegate {
     
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.count == 0 {
             viewModel.bookList.value = []
             viewModel.startIndex.value = 0
+            viewModel.isLoading.value = false
             DispatchQueue.main.async { [weak self] in
                 self?.navigationItem.title = Text.navigationTitle
             }
         }
     }
     
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
         guard let searchText = searchController.searchBar.text else { return }
 
         if searchText.count > 1 {
@@ -316,7 +295,7 @@ extension SearchBookViewController {
     }
     
     private enum Text {
-        static let searchBarPlaceholder: String = "읽고싶은 책을 검색 해보세요."
+        static let searchBarPlaceholder: String = "읽고싶은 책을 검색 해보세요. (2글자 이상)"
         static let navigationTitle: String = "책 검색"
         static let navigationSearchedTitle: String = "검색결과"
     }

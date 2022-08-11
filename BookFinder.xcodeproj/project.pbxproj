@@ -113,7 +113,6 @@
 				E11615D928A1F29D0065AB8F /* Resource */,
 				E11615D828A1F2900065AB8F /* Application */,
 				E13F851028A39B42007272E9 /* Cells */,
-				E13F850828A255AC007272E9 /* Views */,
 				E13F850728A25592007272E9 /* ViewModels */,
 				E13F84F328A210FC007272E9 /* Models */,
 				E13F850B28A2564F007272E9 /* Controllers */,
@@ -214,13 +213,6 @@
 				E13F851328A3D85B007272E9 /* SearchBookViewModel.swift */,
 			);
 			path = ViewModels;
-			sourceTree = "<group>";
-		};
-		E13F850828A255AC007272E9 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Views;
 			sourceTree = "<group>";
 		};
 		E13F850B28A2564F007272E9 /* Controllers */ = {
@@ -522,6 +514,7 @@
 				DEVELOPMENT_TEAM = R4G74AF442;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BookFinder/Resource/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Bookted;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -532,7 +525,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.bhooncoding.BookFinder;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bhooncoding.Bookted;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -550,6 +543,7 @@
 				DEVELOPMENT_TEAM = R4G74AF442;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BookFinder/Resource/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Bookted;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -560,7 +554,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.bhooncoding.BookFinder;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bhooncoding.Bookted;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
