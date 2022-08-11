@@ -43,7 +43,6 @@ public class SearchBookViewModel {
     }
     
     func fetchAnotherBookList(
-        with indexPath: IndexPath,
         searchedTitle: String,
         startIndex: Int
     ) {

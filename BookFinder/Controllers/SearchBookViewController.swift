@@ -144,7 +144,7 @@ extension SearchBookViewController: UICollectionViewDataSource {
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int
     ) -> Int {
-        return bookList.count
+        return viewModel.bookList.value.count
     }
     
     func collectionView(
@@ -154,7 +154,6 @@ extension SearchBookViewController: UICollectionViewDataSource {
     ) {
         if indexPath.item == (viewModel.bookList.value.count - 1) {
             viewModel.fetchAnotherBookList(
-                with: indexPath,
                 searchedTitle: searchedTitle,
                 startIndex: startIndex
             )
