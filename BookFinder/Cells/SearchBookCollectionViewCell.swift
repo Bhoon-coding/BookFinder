@@ -75,8 +75,8 @@ final class SearchBookCollectionViewCell: UICollectionViewCell {
 
 extension SearchBookCollectionViewCell {
     
-    func setupCell(book: BookList) {
-        let bookInfo: BookInfo = book.bookInfo
+    func setupCell(bookList: BookList) {
+        let bookInfo: BookInfo = bookList.bookInfo
         var author: String
         
         if let authors = bookInfo.authors {
