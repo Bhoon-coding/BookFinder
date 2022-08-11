@@ -18,7 +18,7 @@ final class SearchBookViewController: UIViewController {
         searchController.searchBar.placeholder = Text.searchBarPlaceholder
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.automaticallyShowsCancelButton = false
-        searchController.obscuresBackgroundDuringPresentation = true
+        
         return searchController
     }()
     
@@ -34,26 +34,16 @@ final class SearchBookViewController: UIViewController {
     
     // MARK: - Properties
     
-    private var bookListAPIProvider: BookListAPIProviderType?
-    private var bookImageProvider: BookImageProviderType?
+    private let viewModel = SearchBookViewModel()
     
     let sectionInsets = Style.sectionInsets
     var searchedBookTotalCount: Int = 0
     var startIndex: Int = 0
     var searchedTitle: String = ""
+    var bookImage: UIImage = UIImage()
     var bookList: [BookList] = []
 
     // MARK: - LifeCycle 
-    
-    static func instantiate(
-        with bookListAPIProvider: BookListAPIProviderType,
-        _ bookImageProvider: BookImageProviderType
-    ) -> SearchBookViewController {
-        let viewController = SearchBookViewController()
-        viewController.bookListAPIProvider = bookListAPIProvider
-        viewController.bookImageProvider = bookImageProvider
-        return viewController
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,15 +51,7 @@ final class SearchBookViewController: UIViewController {
         setupCollectionView()
         setupConstraints()
         setupSearchController()
-    }
-    
-    private func setupSearchController() {
-        self.navigationItem.searchController = searchController
-        self.navigationItem.title = Text.navigationTitle
-        self.navigationController?.navigationBar.prefersLargeTitles = true
-        self.navigationItem.hidesSearchBarWhenScrolling = false
-        searchController.searchResultsUpdater = self
-        searchController.searchBar.delegate = self
+        setBindings()
     }
     
 }
@@ -99,27 +81,54 @@ extension SearchBookViewController {
     
 }
 
-// MARK: - Fetch BookList Data extension
+// MARK: - SearchController setup extension
 
 extension SearchBookViewController {
     
-    private func fetchBookList(with bookTitle: String) {
-        bookListAPIProvider?.fetchBooks(with: bookTitle, from: startIndex, completion: { [weak self] result in
+    private func setupSearchController() {
+        self.navigationItem.searchController = searchController
+        self.navigationItem.title = Text.navigationTitle
+        self.navigationItem.hidesSearchBarWhenScrolling = false
+        searchController.searchBar.delegate = self
+    }
+    
+}
+
+// MARK: - Data Binding
+
+extension SearchBookViewController {
+    
+    private func setBindings() {
+        viewModel.searchedBookTotalCount.bind { [weak self] searchedBookTotalCount in
             guard let self = self else { return }
-            switch result {
-            case .success(let data):
-                self.searchedBookTotalCount = data.totalItems
-                self.bookList = data.items
-                self.startIndex += 10
-                self.searchedTitle = bookTitle
-                DispatchQueue.main.async {
-                    self.collectionView.reloadData()
-                    self.navigationItem.title = "검색결과: \(self.searchedBookTotalCount)"
+            self.searchedBookTotalCount = searchedBookTotalCount
+            DispatchQueue.main.async {
+                if self.searchedBookTotalCount == 0 {
+                    self.navigationItem.title = Text.navigationTitle
+                } else {
+                    self.navigationItem.title = Text.navigationSearchedTitle + "(\(self.searchedBookTotalCount))"
                 }
-            case .failure(let error):
-                print(error.localizedDescription)
             }
-        })
+        }
+        
+        viewModel.searchedTitle.bind { [weak self] searchedTitle in
+            self?.searchedTitle = searchedTitle
+        }
+        
+        viewModel.startIndex.bind { [weak self] startIndex in
+            self?.startIndex = startIndex
+        }
+        
+        viewModel.bookImage.bind { [weak self] bookImage in
+            self?.bookImage = bookImage
+        }
+        
+        viewModel.bookList.bind { [weak self] bookList in
+            self?.bookList = bookList
+            DispatchQueue.main.async {
+                self?.collectionView.reloadData()
+            }
+        }
     }
     
 }
@@ -140,25 +149,13 @@ extension SearchBookViewController: UICollectionViewDataSource {
         willDisplay cell: UICollectionViewCell,
         forItemAt indexPath: IndexPath
     ) {
-        if indexPath.item == bookList.count - 2 {
-            bookListAPIProvider?.fetchBooks(
-                with: searchedTitle,
-                from: startIndex,
-                completion: { [weak self] result in
-                switch result {
-                case .success(let data):
-                    self?.bookList += data.items
-                    self?.startIndex += 10
-                    DispatchQueue.main.async {
-                        self?.collectionView.reloadData()
-                    }
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
-            }
+        if indexPath.item == (viewModel.bookList.value.count - 1) {
+            viewModel.fetchAnotherBookList(
+                with: indexPath,
+                searchedTitle: searchedTitle,
+                startIndex: startIndex
             )
         }
-        
     }
     
     func collectionView(
@@ -171,20 +168,13 @@ extension SearchBookViewController: UICollectionViewDataSource {
         ) as? SearchBookCollectionViewCell else {
             return UICollectionViewCell()
         }
-        let book: BookList = bookList[indexPath.item]
-        let bookImageURL = book.bookInfo.imageLinks.thumbnail
+        let bookList = viewModel.bookList.value[indexPath.item]
+        let bookImageURL = bookList.bookInfo.imageLinks.thumbnail
         
-        cell.setupCell(book: book)
-        
-        bookImageProvider?.fetchImage(with: bookImageURL, completion: { result in
-            switch result {
-            case .success(let image):
-                cell.setupImage(image: image)
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        })
-        
+        cell.setupCell(bookList: bookList)
+        viewModel.fetchImage(bookImageURL: bookImageURL) {
+            cell.setupImage(image: self.bookImage)
+        }
         return cell
     }
 
@@ -239,18 +229,27 @@ extension SearchBookViewController: UICollectionViewDelegate {
     
 }
 
-// MARK: - Search ResultsUpdate extension
+// MARK: - Search ResultsUpdate
 
-extension SearchBookViewController: UISearchResultsUpdating {
-    
-    func updateSearchResults(for searchController: UISearchController) {
-        guard let searchText = searchController.searchBar.text else { return }
-        if searchText.count >= 2 {
-            fetchBookList(with: searchText)
-        }
-    }
-
-}
+// MARK: - 두 글자 이상 입력시 자동으로 검색기능 (보류)
+//extension SearchBookViewController: UISearchResultsUpdating {
+//
+//    func updateSearchResults(for searchController: UISearchController) {
+//        guard let searchText = searchController.searchBar.text else { return }
+//
+//        if searchText.count >= 2 {
+//            self.viewModel.fetchBookList(with: searchText)
+//        } else if searchText.count == 0 {
+//
+//            self.viewModel.bookList.value = []
+//            self.viewModel.startIndex.value = 0
+//            DispatchQueue.main.async { [weak self] in
+//                self?.navigationItem.title = Text.navigationTitle
+//            }
+//        }
+//    }
+//
+//}
 
 // MARK: - SearchBar Delegate extension
 
@@ -258,11 +257,19 @@ extension SearchBookViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.count == 0 {
-            bookList = []
+            viewModel.bookList.value = []
+            viewModel.startIndex.value = 0
             DispatchQueue.main.async { [weak self] in
-                self?.collectionView.reloadData()
                 self?.navigationItem.title = Text.navigationTitle
             }
+        }
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        guard let searchText = searchController.searchBar.text else { return }
+
+        if searchText.count > 1 {
+            viewModel.fetchBookList(with: searchText)
         }
     }
     
@@ -277,8 +284,9 @@ extension SearchBookViewController {
     }
     
     private enum Text {
-        static let searchBarPlaceholder: String = "찾으시려는 책을 검색 해보세요."
+        static let searchBarPlaceholder: String = "읽고싶은 책을 검색 해보세요."
         static let navigationTitle: String = "책 검색"
+        static let navigationSearchedTitle: String = "검색결과"
     }
     
 }
