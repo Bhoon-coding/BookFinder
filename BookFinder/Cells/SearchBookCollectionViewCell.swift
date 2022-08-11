@@ -78,20 +78,26 @@ extension SearchBookCollectionViewCell {
     func setupCell(bookList: BookList) {
         let bookInfo: BookInfo = bookList.bookInfo
         var author: String
+        var publishedDate: String
         
-        if let authors = bookInfo.authors {
+        if let authors = bookInfo.authors,
+           let validPublishedDate = bookInfo.publishedDate {
             if authors.count > 1 {
                 author = "\(authors[0]) 외 \(authors.count - 1)명"
             } else {
                 author = authors[0]
             }
+            publishedDate = validPublishedDate
+            
         } else {
             author = Text.noAuthor
+            publishedDate = Text.noPublishedDate
         }
         
         bookTitleLabel.text = bookInfo.title
         authorLabel.text = author
-        publishedDataLabel.text = bookInfo.publishedDate
+        publishedDataLabel.text = publishedDate
+        
     }
     
     func setupImage(image: UIImage) {
@@ -154,6 +160,7 @@ extension SearchBookCollectionViewCell {
     
     private enum Text {
         static let noAuthor: String = "작자 미상"
+        static let noPublishedDate: String = "미확인"
     }
 }
 
