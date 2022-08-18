@@ -33,19 +33,19 @@
 - `UnitTest`
 - 이미지 캐싱
 
-<!-- ### PhotoListPage
-|무한스크롤, <br>오픈API (GET)|
+### BookListPage
+|검색, 무한스크롤, <br>오픈API (GET)|
 |:--:|
-|<img src = "https://i.imgur.com/FTYNKLJ.gif" width = "300">|
+|<img src = "https://user-images.githubusercontent.com/64088377/185276557-fa516846-9a89-47c3-bd43-797b05f9d82a.gif" width = "200">|
 
 <br>
 
-### SavedPhotoPage
-|사진 저장 (Local)|저장된 사진 삭제|
-|:--:|:--:|
-|<img src = "https://i.imgur.com/LMyxFQS.gif" width = "200"> | <img src = "https://i.imgur.com/0QJ7GqC.gif" width = "200">|
+### BookDetailPage
+|상세페이지 (WebView)|
+|:--:|
+|<img src = "https://i.imgur.com/RZfHSqV.gif" width = "200"> |
 
---- -->
+---
 <br>
 
 <!-- # 고민한 부분
@@ -126,7 +126,9 @@ subView에 아무리 cornerRadius를 줘봤자 상위 view에서 설정이 되�
 ---
 # 회고
 
-이번 프로젝트로 정말 많은걸 배웠다. MVVM도 학습해서 적용해보고 UnitTest도 해볼 수 있었던 좋은 경험이었다. 이전 프로젝트와는 다르게 무한스크롤(infiniteScroll)도 다른 방식으로 구현해보았고 짧았지만 여러가지로 많은 경험을 할 수 있었던 것 같아 너무 좋았다. 
-추후 회고내용을 좀더 적고, 기술적으로 고민했던 부분도 올려야겠다.
+이번 프로젝트로 정말 많은걸 배웠다.
+MVVM도 학습해서 적용해보았으며, UnitTest도 해볼 수 있었던 좋은 경험이었다.
+이전 프로젝트와는 다른방식으로 무한스크롤(infiniteScroll)도 구현해보았고 짧았지만 여러가지로 많은 경험을 할 수 있었던 것 같아 너무 좋았다.
+먼저 피드백 받은것을 반영해보고 고도화 시켜봐야겠다. 
 
 
