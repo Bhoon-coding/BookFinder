@@ -10,12 +10,12 @@ import UIKit.UIImage
 
 public class SearchBookViewModel {
     
-    let searchedBookTotalCount: Box<Int> = Box(0)
-    let startIndex: Box<Int> = Box(0)
-    let searchedTitle: Box<String> = Box("")
-    var bookList: Box<[BookList]> = Box([])
-    var bookImage: Box<UIImage> = Box(UIImage())
-    var isLoading: Box<Bool> = Box(false)
+    let searchedBookTotalCount: Observable<Int> = Observable(0)
+    let startIndex: Observable<Int> = Observable(0)
+    let searchedTitle: Observable<String> = Observable("")
+    var bookList: Observable<[BookList]> = Observable([])
+    var bookImage: Observable<UIImage> = Observable(UIImage())
+    var isLoading: Observable<Bool> = Observable(false)
     
     private let bookListAPIProvider = BookListAPIProvider(networkRequester: NetworkRequester())
     private let bookImageProvider = BookImageProvider(networkRequester: NetworkRequester())

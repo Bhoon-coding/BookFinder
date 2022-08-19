@@ -25,7 +25,7 @@
 		E13F850F28A2AA62007272E9 /* BookImageAPIProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13F850E28A2AA61007272E9 /* BookImageAPIProvider.swift */; };
 		E13F851228A39B74007272E9 /* BookDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13F851128A39B74007272E9 /* BookDetailViewController.swift */; };
 		E13F851428A3D85B007272E9 /* SearchBookViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13F851328A3D85B007272E9 /* SearchBookViewModel.swift */; };
-		E13F851628A3E471007272E9 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13F851528A3E471007272E9 /* Box.swift */; };
+		E13F851628A3E471007272E9 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13F851528A3E471007272E9 /* Observable.swift */; };
 		E1A02F3A28A4F0A3005FEED2 /* BookList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A02F3928A4F0A3005FEED2 /* BookList.swift */; };
 		E1A02F3C28A4F0B5005FEED2 /* BookInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A02F3B28A4F0B5005FEED2 /* BookInfo.swift */; };
 		E1A02F3E28A4F0CF005FEED2 /* BookImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A02F3D28A4F0CF005FEED2 /* BookImage.swift */; };
@@ -63,7 +63,7 @@
 		E13F850E28A2AA61007272E9 /* BookImageAPIProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookImageAPIProvider.swift; sourceTree = "<group>"; };
 		E13F851128A39B74007272E9 /* BookDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookDetailViewController.swift; sourceTree = "<group>"; };
 		E13F851328A3D85B007272E9 /* SearchBookViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBookViewModel.swift; sourceTree = "<group>"; };
-		E13F851528A3E471007272E9 /* Box.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
+		E13F851528A3E471007272E9 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		E1A02F3928A4F0A3005FEED2 /* BookList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookList.swift; sourceTree = "<group>"; };
 		E1A02F3B28A4F0B5005FEED2 /* BookInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookInfo.swift; sourceTree = "<group>"; };
 		E1A02F3D28A4F0CF005FEED2 /* BookImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookImage.swift; sourceTree = "<group>"; };
@@ -185,7 +185,7 @@
 			isa = PBXGroup;
 			children = (
 				E13F84FF28A23D63007272E9 /* Bundle + extension.swift */,
-				E13F851528A3E471007272E9 /* Box.swift */,
+				E13F851528A3E471007272E9 /* Observable.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -341,7 +341,7 @@
 			files = (
 				E1A02F3C28A4F0B5005FEED2 /* BookInfo.swift in Sources */,
 				E13F84F528A21119007272E9 /* BookListResults.swift in Sources */,
-				E13F851628A3E471007272E9 /* Box.swift in Sources */,
+				E13F851628A3E471007272E9 /* Observable.swift in Sources */,
 				E13F850D28A269AB007272E9 /* SearchBookCollectionViewCell.swift in Sources */,
 				E13F851228A39B74007272E9 /* BookDetailViewController.swift in Sources */,
 				E11615AD28A1F24C0065AB8F /* SearchBookViewController.swift in Sources */,
@@ -507,14 +507,13 @@
 		E11615D028A1F24F0065AB8F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = R4G74AF442;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BookFinder/Resource/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Bookted;
+				INFOPLIST_KEY_CFBundleDisplayName = BookFinder;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -536,14 +535,13 @@
 		E11615D128A1F24F0065AB8F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = R4G74AF442;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BookFinder/Resource/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Bookted;
+				INFOPLIST_KEY_CFBundleDisplayName = BookFinder;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;

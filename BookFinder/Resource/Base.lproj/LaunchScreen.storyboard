@@ -16,37 +16,8 @@
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="wantedLogo" translatesAutoresizingMaskIntoConstraints="NO" id="Nep-cy-JJM">
-                                <rect key="frame" x="107" y="348" width="200" height="200"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="200" id="32w-nG-Zcy"/>
-                                    <constraint firstAttribute="height" constant="200" id="wY0-5s-5ZK"/>
-                                </constraints>
-                            </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Bs-Hn-rOJ">
-                                <rect key="frame" x="0.0" y="548" width="414" height="29"/>
-                                <attributedString key="attributedText">
-                                    <fragment content="좋은 책을 북티드">
-                                        <attributes>
-                                            <font key="NSFont" size="24" name="AppleSDGothicNeo-Bold"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                        </attributes>
-                                    </fragment>
-                                </attributedString>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="0Bs-Hn-rOJ" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="JG1-1a-E3P"/>
-                            <constraint firstItem="Nep-cy-JJM" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="KM4-sP-uQc"/>
-                            <constraint firstItem="0Bs-Hn-rOJ" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="TzK-Kw-Wmd"/>
-                            <constraint firstItem="Nep-cy-JJM" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="bDz-uy-mJZ"/>
-                            <constraint firstItem="0Bs-Hn-rOJ" firstAttribute="top" secondItem="Nep-cy-JJM" secondAttribute="bottom" id="gGn-Xg-kuF"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="0Bs-Hn-rOJ" secondAttribute="trailing" id="rlk-G7-2c8"/>
-                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -55,7 +26,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="wantedLogo" width="240" height="240"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
