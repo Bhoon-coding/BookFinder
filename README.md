@@ -7,6 +7,8 @@
      1. [기능 소개](#기능-소개)
   3. [객체 역할 소개](#객체-역할-소개)
     - 앱 설계
+    - View
+    - Manager
   4. [회고](회고)
 ---
 
@@ -129,6 +131,23 @@ subView에 아무리 cornerRadius를 줘봤자 상위 view에서 설정이 되�
 ### 앱 설계
 
 <img src = "https://i.imgur.com/q7AG67F.png" width = "800">
+
+### View 관련
+
+| class / struct               | 역할                                                         |
+| ---------------------------- | ----------------------------------------------------------- |
+| `SearchBookCollectionViewCell`        | - BookList 데이터를 표시하는 Cell |
+| `SearchBookViewController`   | - `SearchController`를 사용하여 검색기능 사용가능 <br />- 키워드 입력 후 `검색`을 누르면 GET 메서드로 데이터를 불러옴 <br />- BookList의 item(cell)을 누르면 `BookDetailViewController`로 이동 <br /> - `BookDetailViewController` 선택된 item의 데이터 전달 |
+| `BookDetailViewController`     | - `SearchBookViewController`에서 전달받은 데이터를 `webView`로 표현 <br />- load가 되기 전까진 `로딩 인디케이터` 표현  |
+### Manger 관련
+
+| class / struct               | 역할                                                         |
+| ---------------------------- | ----------------------------------------------------------- |
+| `EndPointType`               | - URLRequest를 반환하는데 필요한 정보를 정의하는 Protocol |
+| `BookListEndPoint`             | - EndPointType채택, URLRequest를 반환하는데 필요한 정보를 담고있는 객체 |
+| `NetworkRequester`           | - EndPointType 혹은 URLRequest를 매개변수로 전달받아, 통신을 수행하는 객체 |
+| `BookListAPIProvider`          | - BookListEndPoint, NetworkRequester를 사용하여 API통신을 수행하는 객체 <br />- 반환된 data를 Decode함.|
+| `BookImageProvider`       | - 이미지의 URL -> Image data를 얻어오는 객체. <br />- image caching기능을 수행. |
 
 
 ---
