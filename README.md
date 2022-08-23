@@ -6,9 +6,9 @@
   2. [프로젝트 소개](#프로젝트-소개)
      1. [기능 소개](#기능-소개)
   3. [객체 역할 소개](#객체-역할-소개)
-    - 앱 설계
-    - View
-    - Manager
+  - 앱 설계
+  - View
+  - Manager
   4. [회고](회고)
 ---
 
@@ -23,6 +23,26 @@
 
 # 프로젝트 소개
 - 오픈 API ([Google Book](https://developers.google.com/books/docs/overview?hl=en))를 이용하여 책 검색어에 대한 데이터를 받아와 나타냄.
+
+### API 예시
+
+```swift 
+totalItems: 878
+  ▿ items: 10 elements
+    ▿ BookFinder.BookList
+      - id: "PIVQ6PANsikC"
+      ▿ bookInfo: BookFinder.BookInfo
+        - title: "American Red Cross Sports Safety Training Im"
+        ▿ authors: Optional(["Granada Learning Limited"])
+          ▿ some: 1 element
+            - "Granada Learning Limited"
+        ▿ publishedDate: Optional("1997-12")
+          - some: "1997-12"
+        ▿ imageLinks: Optional(BookFinder.BookImage(thumbnail: "http://books.google.com/books/content?id=PIVQ6PANsikC&printsec=frontcover&img=1&zoom=1&source=gbs_api"))
+          ▿ some: BookFinder.BookImage
+            - thumbnail: "http://books.google.com/books/content?id=PIVQ6PANsikC&printsec=frontcover&img=1&zoom=1&source=gbs_api"
+        - infoLink: "http://books.google.co.kr/books?id=PIVQ6PANsikC&dq=Red&hl=&source=gbs_api"
+```
 
 <br>
 
