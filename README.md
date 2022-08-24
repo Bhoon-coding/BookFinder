@@ -165,7 +165,7 @@ subView에 아무리 cornerRadius를 줘봤자 상위 view에서 설정이 되�
 | ---------------------------- | ----------------------------------------------------------- |
 | `EndPointType`               | - URLRequest를 반환하는데 필요한 정보를 정의하는 Protocol |
 | `BookListEndPoint`             | - EndPointType채택, URLRequest를 반환하는데 필요한 정보를 담고있는 객체 |
-| `NetworkRequester`           | - EndPointType 혹은 URLRequest를 매개변수로 전달받아, 통신을 수행하는 객체 |
+| `NetworkRequester`           | - EndPointType 혹은 URLString를 매개변수로 전달받아, 통신을 수행하는 객체 |
 | `BookListAPIProvider`          | - BookListEndPoint, NetworkRequester를 사용하여 API통신을 수행하는 객체 <br />- 반환된 data를 Decode함.|
 | `BookImageProvider`       | - 이미지의 URL -> Image data를 얻어오는 객체. <br />- image caching기능을 수행. |
 
