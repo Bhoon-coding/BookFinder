@@ -16,6 +16,7 @@ public class SearchBookViewModel {
     var bookList: Observable<[BookList]> = Observable([])
     var bookImage: Observable<UIImage> = Observable(UIImage())
     var isLoading: Observable<Bool> = Observable(false)
+    var noResult: Observable<Bool> = Observable(false)
     
     private let bookListAPIProvider = BookListAPIProvider(networkRequester: NetworkRequester())
     private let bookImageProvider = BookImageProvider(networkRequester: NetworkRequester())
@@ -33,8 +34,13 @@ public class SearchBookViewModel {
                 switch result {
                     
                 case .success(let data):
+                    // TODO: [] 검색결과가 없다는 Alert 띄우기
+                    guard let items = data.items else {
+                        self.noResult.value = true
+                        return
+                    }
                     self.searchedBookTotalCount.value = data.totalItems
-                    self.bookList.value = data.items
+                    self.bookList.value = items
                     self.startIndex.value += 10
                     self.searchedTitle.value = searchText
                     self.isLoading.value = false
@@ -56,10 +62,11 @@ public class SearchBookViewModel {
             from: startIndex,
             completion: { [weak self] result in
                 guard let self = self else { return }
+
                 switch result {
                     
                 case .success(let data):
-                    self.bookList.value += data.items
+                    self.bookList.value += data.items!
                     self.startIndex.value += 10
                     self.isLoading.value = false
                     
@@ -84,9 +91,8 @@ public class SearchBookViewModel {
             case .failure(let error):
                 print(error.localizedDescription)
             }
-            
         }
     }
-    
+
 }
 

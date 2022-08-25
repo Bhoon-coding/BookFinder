@@ -8,6 +8,6 @@
 struct BookListResults: Decodable {
     
     let totalItems: Int
-    let items: [BookList]
+    let items: [BookList]?
     
 }
