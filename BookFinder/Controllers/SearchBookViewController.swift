@@ -13,6 +13,17 @@ final class SearchBookViewController: UIViewController {
     
     // MARK: - UIProperties
     
+    private lazy var alert: UIAlertController = {
+        let alert = UIAlertController(
+            title: Text.alertNoResult,
+            message: nil,
+            preferredStyle: .alert
+        )
+        let confirm = UIAlertAction(title: Text.alertConfirm, style: .default)
+        alert.addAction(confirm)
+        return alert
+    }()
+    
     private lazy var searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchBar.placeholder = Text.searchBarPlaceholder
@@ -163,9 +174,11 @@ extension SearchBookViewController {
         }
         
         viewModel.noResult.bind { [weak self] noResult in
+            guard let self = self else { return }
             DispatchQueue.main.async {
                 if noResult {
-                    self?.spinner.stopAnimating()
+                    self.present(self.alert, animated: true)
+                    self.spinner.stopAnimating()
                 }
             }
         }
@@ -307,6 +320,8 @@ extension SearchBookViewController {
         static let searchBarPlaceholder: String = "읽고싶은 책을 검색 해보세요. (2글자 이상)"
         static let navigationTitle: String = "책 검색"
         static let navigationSearchedTitle: String = "검색결과"
+        static let alertNoResult: String = "검색 결과가 없습니다."
+        static let alertConfirm: String = "확인"
     }
     
 }
