@@ -9,7 +9,9 @@
   - 앱 설계
   - View
   - Manager
-  4. [회고](회고)
+  4. [고민한점](#고민한점) 
+  5. [회고](#회고)
+  
 ---
 
 
@@ -56,19 +58,13 @@ totalItems: 878
 - `UnitTest`
 - 이미지 캐싱
 
-### BookListPage
-|검색, 무한스크롤, <br>오픈API (GET)|
-|:--:|
-|<img src = "https://user-images.githubusercontent.com/64088377/185276557-fa516846-9a89-47c3-bd43-797b05f9d82a.gif" width = "200">|
-
 <br>
 
-### BookDetailPage
-|상세페이지 (WebView)|
-|:--:|
-|<img src = "https://i.imgur.com/RZfHSqV.gif" width = "200"> |
+### BookListPage
+|검색, 무한스크롤, <br>오픈API (GET)|상세페이지 (WebView)|
+|:--:|:--:|
+|<img src = "https://user-images.githubusercontent.com/64088377/185276557-fa516846-9a89-47c3-bd43-797b05f9d82a.gif" width = "200">|<img src = "https://i.imgur.com/RZfHSqV.gif" width = "200"> |
 
----
 <br>
 
 <!-- # 고민한 부분
@@ -171,6 +167,83 @@ subView에 아무리 cornerRadius를 줘봤자 상위 view에서 설정이 되�
 
 
 ---
+# 고민한점
+
+### 문제
+
+검색결과가 없을때 로딩 인디케이터 (spinner)가 계속 돌아감
+
+### 원인
+
+아래와 같이 JSON 의 키 값중 items가 데이터가 없는경우에 해당 값이 없음.
+
+**검색결과가 없을때** <br>
+<img src = "https://user-images.githubusercontent.com/64088377/186690514-d6f099dd-c9a4-4623-b6cc-487444d0d839.png" width = "300">
+
+<br>
+
+**검색결과가 있을때** <br>
+<img src = "https://user-images.githubusercontent.com/64088377/186690572-43981de6-fa75-4d87-8486-f5a2c4c0dfcd.png" width = "600">
+
+
+### 해결
+
+`BookListResults` 의 items에 Optional 처리를 해주었고,  
+
+```swift
+struct BookListResults: Decodable {
+    
+    let totalItems: Int
+    let items: [BookList]?  // Optional
+    
+}
+```
+
+items가 없을시 옵셔널 바인딩 (guard let) 에서 예외처리 부분에 코드를 추가해줌.
+```swift
+// SearchBookViewModel
+    func fetchBookList(
+        with searchText: String
+    ) {
+        isLoading.value = true
+        bookListAPIProvider.fetchBooks(
+            with: searchText,
+            from: startIndex.value,
+            completion: { [weak self] result in
+                guard let self = self else { return }
+                
+                switch result {
+                    
+                case .success(let data):
+                    guard let items = data.items else {
+                        self.noResult.value = true // 예외 처리
+                        return
+                    }
+                    self.searchedBookTotalCount.value = data.totalItems
+                    self.bookList.value = items
+                    self.startIndex.value += 10
+                    self.searchedTitle.value = searchText
+                    self.isLoading.value = false
+                    
+                case .failure(let error):
+                    print(error.localizedDescription)
+                    self.isLoading.value = false
+                }
+            })
+    }
+```
++추가로 
+
+검색결과가 없다는걸 사용자가 알 수 있게 Alert 띄워줌
+
+<img src = "https://user-images.githubusercontent.com/64088377/186696242-fb795850-1f98-4bf4-8fce-c5637578b2df.png" width = "200">
+
+
+----
+
+
+
+
 # 회고
 
 이번 프로젝트로 정말 많은걸 배웠다.
