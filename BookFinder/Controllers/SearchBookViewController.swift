@@ -49,6 +49,7 @@ final class SearchBookViewController: UIViewController {
     private var searchedTitle: String = ""
     private var bookImage: UIImage = UIImage()
     private var bookList: [BookList] = []
+    private var noResult: Bool = false
 
     // MARK: - LifeCycle 
     
@@ -159,6 +160,14 @@ extension SearchBookViewController {
                 }
             }
             
+        }
+        
+        viewModel.noResult.bind { [weak self] noResult in
+            DispatchQueue.main.async {
+                if noResult {
+                    self?.spinner.stopAnimating()
+                }
+            }
         }
     }
     
