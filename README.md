@@ -63,7 +63,7 @@ totalItems: 878
 ### BookListPage
 |검색, 무한스크롤, <br>오픈API (GET)|상세페이지 (WebView)|
 |:--:|:--:|
-|<img src = "https://user-images.githubusercontent.com/64088377/185276557-fa516846-9a89-47c3-bd43-797b05f9d82a.gif" width = "200">|<img src = "https://i.imgur.com/RZfHSqV.gif" width = "200"> |
+|<img src = "https://user-images.githubusercontent.com/64088377/187182069-0d0d1a6d-d67e-40a2-b4f1-1e048e6a0514.gif" width = "200">|<img src = "https://i.imgur.com/RZfHSqV.gif" width = "200"> |
 
 <br>
 
