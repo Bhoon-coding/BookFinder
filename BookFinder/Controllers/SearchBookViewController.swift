@@ -79,30 +79,7 @@ final class SearchBookViewController: UIViewController {
         setupConstraints()
         setupSearchController()
         setBindings()
-        
-        dataSource = UICollectionViewDiffableDataSource<Section, Item>(
-            collectionView: collectionView,
-            cellProvider: { (collectionView, indexPath, item) -> UICollectionViewCell? in
-            guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: SearchBookCollectionViewCell.identifier,
-                for: indexPath
-            ) as? SearchBookCollectionViewCell else { return nil }
-            cell.setupCell(bookList: item)
-            let bookImageURL = item.bookInfo.imageLinks?.thumbnail ?? Style.emptyImageURL
-            self.viewModel.fetchImage(bookImageURL: bookImageURL) { result in
-                switch result {
-                    
-                case .success(let image):
-                    cell.setupImage(with: image)
-                    
-                case .failure(let error):
-                    print(error.localizedDescription)
-                    
-                }
-            }
-            return cell
-        })
-        
+        configureDataSource()
     }
     
 }
@@ -188,7 +165,7 @@ extension SearchBookViewController {
                 var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
                 snapshot.appendSections([.main])
                 snapshot.appendItems(bookList, toSection: .main)
-                self.dataSource?.apply(snapshot, animatingDifferences: true)
+                self.dataSource?.apply(snapshot)
             }
             
         }
@@ -244,6 +221,37 @@ extension SearchBookViewController: UICollectionViewDelegateFlowLayout {
         insetForSectionAt section: Int
     ) -> UIEdgeInsets {
         return sectionInsets
+    }
+    
+}
+
+// MARK: - DiffableDataSource extension
+
+extension SearchBookViewController {
+    
+    func configureDataSource() {
+        dataSource = UICollectionViewDiffableDataSource<Section, Item>(
+            collectionView: collectionView,
+            cellProvider: { (collectionView, indexPath, item) -> UICollectionViewCell? in
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: SearchBookCollectionViewCell.identifier,
+                for: indexPath
+            ) as? SearchBookCollectionViewCell else { return nil }
+            cell.setupCell(bookList: item)
+            let bookImageURL = item.bookInfo.imageLinks?.thumbnail ?? Style.emptyImageURL
+            self.viewModel.fetchImage(bookImageURL: bookImageURL) { result in
+                switch result {
+                    
+                case .success(let image):
+                    cell.setupImage(with: image)
+                    
+                case .failure(let error):
+                    print(error.localizedDescription)
+                    
+                }
+            }
+            return cell
+        })
     }
     
 }

@@ -7,13 +7,9 @@
 
 import Foundation
 
-struct BookList: Decodable, Hashable {
+struct BookList: Decodable {
     
-    static func == (lhs: BookList, rhs: BookList) -> Bool {
-        return lhs.uuid == rhs.uuid
-    }
-    
-    var uuid = UUID()
+    let uuid = UUID()
     let id: String
     let bookInfo: BookInfo
     
@@ -22,6 +18,14 @@ struct BookList: Decodable, Hashable {
         case uuid, id
         case bookInfo = "volumeInfo"
         
+    }
+    
+}
+
+extension BookList: Hashable {
+    
+    static func == (lhs: BookList, rhs: BookList) -> Bool {
+        return lhs.uuid == rhs.uuid
     }
     
 }

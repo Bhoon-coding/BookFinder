@@ -14,7 +14,6 @@ public class SearchBookViewModel {
     let startIndex: Observable<Int> = Observable(0)
     let searchedTitle: Observable<String> = Observable("")
     var bookList: Observable<[BookList]> = Observable([])
-    var bookImage: Observable<UIImage> = Observable(UIImage())
     var isLoading: Observable<Bool> = Observable(false)
     var noResult: Observable<Bool> = Observable(false)
     
@@ -34,7 +33,6 @@ public class SearchBookViewModel {
                 switch result {
                     
                 case .success(let data):
-                    // TODO: [] 검색결과가 없다는 Alert 띄우기
                     guard let items = data.items else {
                         self.noResult.value = true
                         return
@@ -66,7 +64,11 @@ public class SearchBookViewModel {
                 switch result {
                     
                 case .success(let data):
-                    self.bookList.value += data.items!
+                    guard let items = data.items else {
+                        self.noResult.value = true
+                        return
+                    }
+                    self.bookList.value += items
                     self.startIndex.value += 10
                     self.isLoading.value = false
                     
@@ -79,17 +81,16 @@ public class SearchBookViewModel {
         
     }
     
-    func fetchImage(bookImageURL: String, completion: @escaping () -> Void) {
-        bookImageProvider.fetchImage(with: bookImageURL) { [weak self] result in
-            guard let self = self else { return }
+    func fetchImage(bookImageURL: String, completion: @escaping (Result<UIImage, Error>) -> Void) {
+        bookImageProvider.fetchImage(with: bookImageURL) {
+            result in
             switch result {
                 
             case .success(let image):
-                self.bookImage.value = image
-                completion()
+                completion(.success(image))
                 
             case .failure(let error):
-                print(error.localizedDescription)
+                completion(.failure(error))
             }
         }
     }
