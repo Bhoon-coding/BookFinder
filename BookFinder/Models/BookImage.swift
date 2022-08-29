@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct BookImage: Decodable {
+struct BookImage: Decodable, Hashable {
     
     let thumbnail: String
     

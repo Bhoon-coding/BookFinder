@@ -7,14 +7,19 @@
 
 import Foundation
 
-struct BookList: Decodable {
+struct BookList: Decodable, Hashable {
     
+    static func == (lhs: BookList, rhs: BookList) -> Bool {
+        return lhs.uuid == rhs.uuid
+    }
+    
+    var uuid = UUID()
     let id: String
     let bookInfo: BookInfo
     
     enum CodingKeys: String, CodingKey {
         
-        case id
+        case uuid, id
         case bookInfo = "volumeInfo"
         
     }

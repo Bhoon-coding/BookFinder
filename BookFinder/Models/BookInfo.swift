@@ -7,8 +7,12 @@
 
 import Foundation
 
-struct BookInfo: Decodable {
+struct BookInfo: Decodable, Hashable {
+    static func == (lhs: BookInfo, rhs: BookInfo) -> Bool {
+        return lhs.uuid == rhs.uuid
+    }
     
+    var uuid = UUID()
     let title: String
     let authors: [String]?
     let publishedDate: String?
