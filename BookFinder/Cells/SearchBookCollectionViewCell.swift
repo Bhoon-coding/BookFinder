@@ -100,9 +100,9 @@ extension SearchBookCollectionViewCell {
         
     }
     
-    func setupImage(image: UIImage) {
-        DispatchQueue.main.async {
-            self.bookImageView.image = image
+    func setupImage(with image: UIImage) {
+        DispatchQueue.main.async { [weak self] in
+            self?.bookImageView.image = image
         }
     }
 }

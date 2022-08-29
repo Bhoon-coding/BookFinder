@@ -11,6 +11,12 @@ import SnapKit
 
 final class SearchBookViewController: UIViewController {
     
+    enum Section {
+        case main
+    }
+    
+    typealias Item = BookList
+    
     // MARK: - UIProperties
     
     private lazy var alert: UIAlertController = {
@@ -54,6 +60,8 @@ final class SearchBookViewController: UIViewController {
     
     private let viewModel = SearchBookViewModel()
     
+    private var dataSource: UICollectionViewDiffableDataSource<Section, Item>?
+    
     private let sectionInsets = Style.sectionInsets
     private var searchedBookTotalCount: Int = 0
     private var startIndex: Int = 0
@@ -71,6 +79,7 @@ final class SearchBookViewController: UIViewController {
         setupConstraints()
         setupSearchController()
         setBindings()
+        configureDataSource()
     }
     
 }
@@ -96,7 +105,6 @@ extension SearchBookViewController {
     
     private func setupCollectionView() {
         collectionView.delegate = self
-        collectionView.dataSource = self
     }
     
 }
@@ -149,17 +157,17 @@ extension SearchBookViewController {
         viewModel.startIndex.bind { [weak self] startIndex in
             self?.startIndex = startIndex
         }
-        
-        viewModel.bookImage.bind { [weak self] bookImage in
-            self?.bookImage = bookImage
-        }
-        
+                
         viewModel.bookList.bind { [weak self] bookList in
-            self?.bookList = bookList
-            
+            guard let self = self else { return }
+            self.bookList = bookList
             DispatchQueue.main.async {
-                self?.collectionView.reloadData()
+                var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
+                snapshot.appendSections([.main])
+                snapshot.appendItems(bookList, toSection: .main)
+                self.dataSource?.apply(snapshot)
             }
+            
         }
         
         viewModel.isLoading.bind { [weak self] isLoading in
@@ -184,52 +192,6 @@ extension SearchBookViewController {
         }
     }
     
-}
-
-// MARK: - CollectionView DataSource extension
-
-extension SearchBookViewController: UICollectionViewDataSource {
-    
-    func collectionView(
-        _ collectionView: UICollectionView,
-        numberOfItemsInSection section: Int
-    ) -> Int {
-        return viewModel.bookList.value.count
-    }
-    
-     func collectionView(
-        _ collectionView: UICollectionView,
-        willDisplay cell: UICollectionViewCell,
-        forItemAt indexPath: IndexPath
-    ) {
-        if indexPath.item == (viewModel.bookList.value.count - 1) {
-            viewModel.fetchAnotherBookList(
-                searchedTitle: searchedTitle,
-                startIndex: startIndex
-            )
-        }
-    }
-    
-     func collectionView(
-        _ collectionView: UICollectionView,
-        cellForItemAt indexPath: IndexPath
-    ) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: SearchBookCollectionViewCell.identifier,
-            for: indexPath
-        ) as? SearchBookCollectionViewCell else {
-            return UICollectionViewCell()
-        }
-        let bookList = viewModel.bookList.value[indexPath.item]
-        let bookImageURL = bookList.bookInfo.imageLinks?.thumbnail ?? Style.emptyImageURL
-       
-        cell.setupCell(bookList: bookList)
-        viewModel.fetchImage(bookImageURL: bookImageURL) {
-            cell.setupImage(image: self.bookImage)
-        }
-        return cell
-    }
-
 }
 
 // MARK: - CollectionView DelegateFlowLayout extension
@@ -263,6 +225,37 @@ extension SearchBookViewController: UICollectionViewDelegateFlowLayout {
     
 }
 
+// MARK: - DiffableDataSource extension
+
+extension SearchBookViewController {
+    
+    func configureDataSource() {
+        dataSource = UICollectionViewDiffableDataSource<Section, Item>(
+            collectionView: collectionView,
+            cellProvider: { (collectionView, indexPath, item) -> UICollectionViewCell? in
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: SearchBookCollectionViewCell.identifier,
+                for: indexPath
+            ) as? SearchBookCollectionViewCell else { return nil }
+            cell.setupCell(bookList: item)
+            let bookImageURL = item.bookInfo.imageLinks?.thumbnail ?? Style.emptyImageURL
+            self.viewModel.fetchImage(bookImageURL: bookImageURL) { result in
+                switch result {
+                    
+                case .success(let image):
+                    cell.setupImage(with: image)
+                    
+                case .failure(let error):
+                    print(error.localizedDescription)
+                    
+                }
+            }
+            return cell
+        })
+    }
+    
+}
+
 // MARK: - CollectionView Delegate extension
 
 extension SearchBookViewController: UICollectionViewDelegate {
@@ -277,6 +270,19 @@ extension SearchBookViewController: UICollectionViewDelegate {
         let book: BookList = bookList[indexPath.item]
         let bookDetailViewController = BookDetailViewController(book: book)
         navigationController?.pushViewController(bookDetailViewController, animated: true)
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        willDisplay cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        if indexPath.item == (viewModel.bookList.value.count - 1) {
+            viewModel.fetchAnotherBookList(
+                searchedTitle: searchedTitle,
+                startIndex: startIndex
+            )
+        }
     }
     
 }

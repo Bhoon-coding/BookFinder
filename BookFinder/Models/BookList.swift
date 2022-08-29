@@ -9,14 +9,23 @@ import Foundation
 
 struct BookList: Decodable {
     
+    let uuid = UUID()
     let id: String
     let bookInfo: BookInfo
     
     enum CodingKeys: String, CodingKey {
         
-        case id
+        case uuid, id
         case bookInfo = "volumeInfo"
         
+    }
+    
+}
+
+extension BookList: Hashable {
+    
+    static func == (lhs: BookList, rhs: BookList) -> Bool {
+        return lhs.uuid == rhs.uuid
     }
     
 }
