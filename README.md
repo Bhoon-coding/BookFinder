@@ -63,7 +63,7 @@ totalItems: 878
 ### BookListPage
 |검색, 무한스크롤, <br>오픈API (GET)|상세페이지 (WebView)|
 |:--:|:--:|
-|<img src = "https://user-images.githubusercontent.com/64088377/185276557-fa516846-9a89-47c3-bd43-797b05f9d82a.gif" width = "200">|<img src = "https://i.imgur.com/RZfHSqV.gif" width = "200"> |
+|<img src = "https://user-images.githubusercontent.com/64088377/187182069-0d0d1a6d-d67e-40a2-b4f1-1e048e6a0514.gif" width = "200">|<img src = "https://i.imgur.com/RZfHSqV.gif" width = "200"> |
 
 <br>
 
@@ -169,9 +169,13 @@ subView에 아무리 cornerRadius를 줘봤자 상위 view에서 설정이 되�
 ---
 # 고민한점
 
+<details>
+<summary>검색결과가 없을때 `spinner` 가 계속 돌게됨</summary>
+<div markdown="1">       
+
 ### 문제
 
-검색결과가 없을때 로딩 인디케이터 (spinner)가 계속 돌아감
+검색결과가 없을때 로딩 인디케이터 (spinner)가 계속 돌게됨
 
 ### 원인
 
@@ -237,6 +241,48 @@ items가 없을시 옵셔널 바인딩 (guard let) 에서 예외처리 부분에
 검색결과가 없다는걸 사용자가 알 수 있게 Alert 띄워줌
 
 <img src = "https://user-images.githubusercontent.com/64088377/186696242-fb795850-1f98-4bf4-8fce-c5637578b2df.png" width = "200">
+    
+</div>
+</details>
+    
+<details>
+<summary>CollectionView 깜빡임 현상</summary>
+<div markdown="1">       
+
+### 문제 
+
+새로운 데이터를 받아올때마다 imageView가 깜빡임
+
+### 원인 
+
+데이터를 받아올때 마다 `CollectionView.reloadData()`를 하게 되면서 기존에 보여졌던 사진들이 새로고침되어 깜빡이게 됨.
+
+### 해결
+
+- DiffableDataSource와 Snapshot을 활용해 다른값들을 비교후 새로운 값에 대해서만 업데이트 처리
+- `reloadData()` 의 딱딱한 UX에서 -> 애니메이션 효과로 UX 개선
+
+|Before|After|
+|----|----|
+|<img src = "https://user-images.githubusercontent.com/64088377/185276557-fa516846-9a89-47c3-bd43-797b05f9d82a.gif" width = "200">|<img src = "https://user-images.githubusercontent.com/64088377/187182069-0d0d1a6d-d67e-40a2-b4f1-1e048e6a0514.gif" width = "200">|
+
+
+
+</div>
+</details>
+    
+
+
+
+<!-- <details>
+<summary>여기를 눌러주세요</summary>
+<div markdown="1">       
+
+😎숨겨진 내용😎
+
+</div>
+</details> -->
+
 
 
 ----
