@@ -307,6 +307,9 @@ extension SearchBookViewController: UISearchBarDelegate {
 
         if searchText.count > 1 {
             viewModel.fetchBookList(with: searchText)
+            self.collectionView.scrollToItem(at: IndexPath(item: -1, section: 0),
+                                             at: .top,
+                                             animated: false)
         }
     }
     
