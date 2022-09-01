@@ -35,6 +35,7 @@ final class SearchBookViewController: UIViewController {
         searchController.searchBar.placeholder = Text.searchBarPlaceholder
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.automaticallyShowsCancelButton = false
+        searchController.obscuresBackgroundDuringPresentation = true
         return searchController
     }()
     
