@@ -35,7 +35,8 @@ final class SearchBookViewController: UIViewController {
         searchController.searchBar.placeholder = Text.searchBarPlaceholder
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.automaticallyShowsCancelButton = false
-        searchController.obscuresBackgroundDuringPresentation = true
+        searchController.obscuresBackgroundDuringPresentation = false
+        
         return searchController
     }()
     
@@ -46,6 +47,7 @@ final class SearchBookViewController: UIViewController {
             SearchBookCollectionViewCell.self,
             forCellWithReuseIdentifier: SearchBookCollectionViewCell.identifier
         )
+        collectionView.backgroundColor = .systemBackground
         return collectionView
     }()
     
@@ -75,7 +77,6 @@ final class SearchBookViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
         setupView()
         setupConstraints()
         setupSearchController()
@@ -90,6 +91,7 @@ final class SearchBookViewController: UIViewController {
 extension SearchBookViewController {
     
     private func setupView() {
+        view.backgroundColor = .white
         setupCollectionView()
         [collectionView,
         spinner].forEach {
@@ -121,7 +123,8 @@ extension SearchBookViewController {
     
     private func setupConstraintsOfCollectionView() {
         collectionView.snp.makeConstraints {
-            $0.leading.top.trailing.bottom.equalToSuperview()
+            $0.top.equalToSuperview().offset(view.frame.height * 0.17)
+            $0.leading.trailing.bottom.equalToSuperview()
         }
     }
     
