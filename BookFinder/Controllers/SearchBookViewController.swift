@@ -11,12 +11,6 @@ import SnapKit
 
 final class SearchBookViewController: UIViewController {
     
-    enum Section {
-        case main
-    }
-    
-    typealias Item = BookList
-    
     // MARK: - UIProperties
     
     private lazy var alert: UIAlertController = {
@@ -60,6 +54,12 @@ final class SearchBookViewController: UIViewController {
     }()
     
     // MARK: - Properties
+    
+    enum Section {
+        case main
+    }
+    
+    typealias Item = BookList
     
     private let viewModel = SearchBookViewModel()
     
@@ -241,7 +241,7 @@ extension SearchBookViewController {
                 withReuseIdentifier: SearchBookCollectionViewCell.identifier,
                 for: indexPath
             ) as? SearchBookCollectionViewCell else { return nil }
-            cell.setupCell(bookList: item)
+                cell.setupCell(bookList: item)
             let bookImageURL = item.bookInfo.imageLinks?.thumbnail ?? Style.emptyImageURL
             self.viewModel.fetchImage(bookImageURL: bookImageURL) { result in
                 switch result {
@@ -268,10 +268,11 @@ extension SearchBookViewController: UICollectionViewDelegate {
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
     ) {
+        
         let backBarButtonItem = UIBarButtonItem(title: nil, style: .plain, target: self, action: nil)
         backBarButtonItem.tintColor = .black
         navigationItem.backBarButtonItem = backBarButtonItem
-        let book: BookList = bookList[indexPath.item]
+        let book: BookList? = bookList[safe: indexPath.item]
         let bookDetailViewController = BookDetailViewController(book: book)
         navigationController?.pushViewController(bookDetailViewController, animated: true)
     }

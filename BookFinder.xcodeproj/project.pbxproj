@@ -30,6 +30,7 @@
 		E1A02F3C28A4F0B5005FEED2 /* BookInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A02F3B28A4F0B5005FEED2 /* BookInfo.swift */; };
 		E1A02F3E28A4F0CF005FEED2 /* BookImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A02F3D28A4F0CF005FEED2 /* BookImage.swift */; };
 		E1A02F4028A51E56005FEED2 /* BookFinderURLSessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A02F3F28A51E56005FEED2 /* BookFinderURLSessionTests.swift */; };
+		E1D37D0228C3A1C200874DBB /* Array + extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D37D0128C3A1C200874DBB /* Array + extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +69,7 @@
 		E1A02F3B28A4F0B5005FEED2 /* BookInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookInfo.swift; sourceTree = "<group>"; };
 		E1A02F3D28A4F0CF005FEED2 /* BookImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookImage.swift; sourceTree = "<group>"; };
 		E1A02F3F28A51E56005FEED2 /* BookFinderURLSessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookFinderURLSessionTests.swift; sourceTree = "<group>"; };
+		E1D37D0128C3A1C200874DBB /* Array + extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array + extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -186,6 +188,7 @@
 			children = (
 				E13F84FF28A23D63007272E9 /* Bundle + extension.swift */,
 				E13F851528A3E471007272E9 /* Observable.swift */,
+				E1D37D0128C3A1C200874DBB /* Array + extension.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -354,6 +357,7 @@
 				E11615A928A1F24C0065AB8F /* AppDelegate.swift in Sources */,
 				E11615AB28A1F24C0065AB8F /* SceneDelegate.swift in Sources */,
 				E1A02F3A28A4F0A3005FEED2 /* BookList.swift in Sources */,
+				E1D37D0228C3A1C200874DBB /* Array + extension.swift in Sources */,
 				E13F850628A2428B007272E9 /* BookListAPIProvider.swift in Sources */,
 				E13F850028A23D63007272E9 /* Bundle + extension.swift in Sources */,
 			);

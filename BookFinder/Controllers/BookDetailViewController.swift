@@ -29,9 +29,9 @@ final class BookDetailViewController: UIViewController {
     
     // MARK: - Properties
     
-    var book: BookList
+    var book: BookList?
     
-    init(book: BookList) {
+    init(book: BookList?) {
         self.book = book
         super.init(nibName: nil, bundle: nil)
     }
@@ -62,7 +62,7 @@ extension BookDetailViewController {
     private func setupWebView() {
         webView.navigationDelegate = self
         
-        if let url = URL(string: book.bookInfo.infoLink) {
+        if let url = URL(string: book?.bookInfo.infoLink ?? "") {
             let urlRequest = URLRequest(url: url)
             webView.load(urlRequest)
         }
