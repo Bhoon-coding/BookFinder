@@ -16,9 +16,8 @@
 
 
 # 👨‍💻 Developer
-|Peppo|
+|이병훈 (1인 개발)|
 |:--:|
-|[<img src = "https://user-images.githubusercontent.com/78457093/180595896-1ae6c1a5-4ebe-48da-9d7d-8246046ec12e.jpg" width = "250" height = "300">](https://github.com/Bhoon-coding)|
 
 --- 
 <br>
