@@ -100,14 +100,19 @@ extension SearchBookViewController {
     }
     
     private func setupSearchController() {
-        self.navigationItem.searchController = searchController
-        self.navigationItem.title = Text.navigationTitle
-        self.navigationItem.hidesSearchBarWhenScrolling = false
+        navigationItem.searchController = searchController
+        navigationItem.title = Text.navigationTitle
+        navigationItem.hidesSearchBarWhenScrolling = false
         searchController.searchBar.delegate = self
     }
     
     private func setupCollectionView() {
         collectionView.delegate = self
+    }
+    
+    private func scrollToTop() {
+        let indexPath = IndexPath(item: -1, section: 0)
+        collectionView.scrollToItem(at: indexPath, at: .top, animated: false)
     }
     
 }
@@ -312,9 +317,7 @@ extension SearchBookViewController: UISearchBarDelegate {
 
         if searchText.count > 1 {
             viewModel.fetchBookList(with: searchText)
-            self.collectionView.scrollToItem(at: IndexPath(item: -1, section: 0),
-                                             at: .top,
-                                             animated: false)
+            scrollToTop()
         }
     }
     
