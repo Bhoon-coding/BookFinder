@@ -12,23 +12,19 @@ protocol BookImageProviderType {
     
     func fetchImage(
         with urlString: String,
-        completion: @escaping (Result<UIImage, Error>) -> Void
+        completion: @escaping (Result<UIImage, NetworkError>) -> Void
     )
     
 }
-
-class BookImageProvider: BookImageProviderType {
+// APIKIt 스터디
+struct BookImageProvider: BookImageProviderType {
     
-    private var networkRequester: NetworkRequesterType
+    private let networkRequester: NetworkRequesterType
     private var imageCahe = NSCache<NSString, UIImage>()
-    
-    init(networkRequester: NetworkRequesterType) {
-        self.networkRequester = networkRequester
-    }
     
     func fetchImage(
         with urlString: String,
-        completion: @escaping (Result<UIImage, Error>) -> Void
+        completion: @escaping (Result<UIImage, NetworkError>) -> Void
     ) {
         let cacheKey = NSString(string: urlString)
         if let cachedImage = imageCahe.object(forKey: cacheKey) {
@@ -39,6 +35,7 @@ class BookImageProvider: BookImageProviderType {
                 
             case .success(let data):
                 guard let image = UIImage(data: data) else {
+                    completion(.failure(.emptyData))
                     return
                 }
                 self.imageCahe.setObject(image, forKey: cacheKey)
