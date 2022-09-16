@@ -11,6 +11,7 @@ protocol EndPointType {
     
     var baseURL: String { get }
     var path: String { get }
+    var httpMethods: HTTPMethod { get }
     var query: [URLQueryItem]? { get }
     
     func asURLRequest() -> URLRequest?

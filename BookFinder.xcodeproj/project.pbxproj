@@ -31,6 +31,7 @@
 		E1A02F3E28A4F0CF005FEED2 /* BookImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A02F3D28A4F0CF005FEED2 /* BookImage.swift */; };
 		E1A02F4028A51E56005FEED2 /* BookFinderURLSessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A02F3F28A51E56005FEED2 /* BookFinderURLSessionTests.swift */; };
 		E1D37D0228C3A1C200874DBB /* Array + extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D37D0128C3A1C200874DBB /* Array + extension.swift */; };
+		E1D5F5C628D44C9300628124 /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D5F5C528D44C9300628124 /* HTTPMethod.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +71,7 @@
 		E1A02F3D28A4F0CF005FEED2 /* BookImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookImage.swift; sourceTree = "<group>"; };
 		E1A02F3F28A51E56005FEED2 /* BookFinderURLSessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookFinderURLSessionTests.swift; sourceTree = "<group>"; };
 		E1D37D0128C3A1C200874DBB /* Array + extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array + extension.swift"; sourceTree = "<group>"; };
+		E1D5F5C528D44C9300628124 /* HTTPMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethod.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -167,6 +169,7 @@
 		E13F84F628A23A3F007272E9 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				E1D5F5C428D44C7E00628124 /* Service */,
 				E13F850428A2426B007272E9 /* APIProvider */,
 				E13F850128A2400E007272E9 /* NetworkReqeuster */,
 				E13F84FB28A23A8B007272E9 /* EndPoint */,
@@ -233,6 +236,14 @@
 				E13F850C28A269AB007272E9 /* SearchBookCollectionViewCell.swift */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		E1D5F5C428D44C7E00628124 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				E1D5F5C528D44C9300628124 /* HTTPMethod.swift */,
+			);
+			path = Service;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -342,6 +353,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E1D5F5C628D44C9300628124 /* HTTPMethod.swift in Sources */,
 				E1A02F3C28A4F0B5005FEED2 /* BookInfo.swift in Sources */,
 				E13F84F528A21119007272E9 /* BookListResults.swift in Sources */,
 				E13F851628A3E471007272E9 /* Observable.swift in Sources */,
