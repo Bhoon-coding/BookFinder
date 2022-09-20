@@ -22,6 +22,10 @@ struct BookImageProvider: BookImageProviderType {
     private let networkRequester: NetworkRequesterType
     private var imageCahe = NSCache<NSString, UIImage>()
     
+    init(networkRequester: NetworkRequesterType) {
+        self.networkRequester = networkRequester
+    }
+    
     func fetchImage(
         with urlString: String,
         completion: @escaping (Result<UIImage, NetworkError>) -> Void
